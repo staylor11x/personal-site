@@ -1,11 +1,158 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-ui-mono);
+  --color-bg: var(--site-color-bg);
+  --color-bg-elevated: var(--site-color-bg-elevated);
+  --color-surface: var(--site-color-surface);
+  --color-surface-strong: var(--site-color-surface-strong);
+  --color-border-subtle: var(--site-color-border-subtle);
+  --color-border-strong: var(--site-color-border-strong);
+  --color-foreground: var(--site-color-foreground);
+  --color-foreground-muted: var(--site-color-foreground-muted);
+  --color-accent-cyan: var(--site-color-accent-cyan);
+  --color-accent-magenta: var(--site-color-accent-magenta);
+}
+
 :root {
   color-scheme: dark;
+  --site-color-bg: #060816;
+  --site-color-bg-elevated: #0b1225;
+  --site-color-surface: rgba(11, 18, 37, 0.78);
+  --site-color-surface-strong: rgba(15, 23, 42, 0.92);
+  --site-color-border-subtle: rgba(148, 163, 184, 0.2);
+  --site-color-border-strong: rgba(103, 232, 249, 0.4);
+  --site-color-foreground: #edf4ff;
+  --site-color-foreground-muted: #9fb0cb;
+  --site-color-accent-cyan: #67e8f9;
+  --site-color-accent-magenta: #f472b6;
+  --site-space-gutter: clamp(1.25rem, 4vw, 2rem);
+  --site-space-section: clamp(4rem, 10vw, 7rem);
+  --site-space-stack: clamp(1rem, 2vw, 1.5rem);
+  --site-radius-panel: 1.5rem;
+  --site-radius-pill: 999px;
+  --site-glow-soft: 0 0 0 1px rgba(103, 232, 249, 0.14), 0 24px 80px rgba(8, 15, 37, 0.55), 0 0 48px rgba(103, 232, 249, 0.08);
+  --site-glow-focus: 0 0 0 1px rgba(103, 232, 249, 0.45), 0 0 0 4px rgba(103, 232, 249, 0.16);
+  --site-grid-line: rgba(148, 163, 184, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  border-color: var(--site-color-border-subtle);
+}
+
+html {
+  background-color: var(--site-color-bg);
 }
 
 body {
   min-height: 100vh;
-  background: #020617;
-  color: #e2e8f0;
+  margin: 0;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top, rgba(103, 232, 249, 0.12), transparent 32%),
+    radial-gradient(circle at 82% 18%, rgba(244, 114, 182, 0.1), transparent 24%),
+    linear-gradient(180deg, #040816 0%, #060816 48%, #020617 100%);
+  color: var(--site-color-foreground);
+  font-family: var(--font-body), sans-serif;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, var(--site-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--site-grid-line) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.68), transparent 100%);
+  opacity: 0.65;
+  animation: ambient-drift 24s linear infinite alternate;
+}
+
+::selection {
+  background: rgba(103, 232, 249, 0.22);
+  color: var(--site-color-foreground);
+}
+
+a {
+  color: inherit;
+}
+
+code,
+pre,
+kbd,
+samp,
+[data-ui="technical"] {
+  font-family: var(--font-ui-mono), monospace;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--site-glow-focus);
+}
+
+@keyframes ambient-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0.75rem, 0);
+  }
+}
+
+@keyframes accent-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.2), 0 0 0 rgba(103, 232, 249, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.38), 0 0 24px rgba(103, 232, 249, 0.12);
+  }
+}
+
+@utility panel-surface {
+  background: var(--site-color-surface);
+  border: 1px solid var(--site-color-border-subtle);
+  border-radius: var(--site-radius-panel);
+  box-shadow: var(--site-glow-soft);
+  backdrop-filter: blur(18px);
+}
+
+@utility technical-label {
+  font-family: var(--font-ui-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+}
+
+@utility motion-safe-accent {
+  animation: accent-pulse 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  body::before {
+    opacity: 0.4;
+  }
 }
