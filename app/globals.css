@@ -44,6 +44,7 @@
 
 html {
   background-color: var(--site-color-bg);
+  scroll-behavior: smooth;
 }
 
 body {
