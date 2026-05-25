@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
 import type { ReactNode } from "react";
+import { getContactContent } from "../lib/content";
 import { SiteContainer, SurfaceCard } from "./components/site-primitives";
 import "./globals.css";
 
@@ -68,9 +69,8 @@ const primaryNavItems = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-const contactShellItems = ["Email slot", "GitHub slot", "LinkedIn slot"] as const;
-
 export default function RootLayout({ children }: RootLayoutProps) {
+  const contact = getContactContent();
   return (
     <html lang="en">
       <body className={[bodyFont.variable, monoFont.variable, "font-sans", "antialiased"].join(" ")}>
@@ -113,19 +113,20 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <SiteContainer>
               <SurfaceCard className="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-2">
-                  <h2 className="technical-label text-xs text-accent-magenta">
-                    Contact shell
-                  </h2>
-                  <p className="max-w-2xl text-sm text-foreground-muted">
-                    Footer structure is in place for production contact links once Phase 1 shell work gives way to content and polish.
-                  </p>
+                  <p className="technical-label text-xs text-accent-magenta">Contact</p>
+                  <p className="max-w-2xl text-sm text-foreground-muted">{contact.tagline}</p>
                 </div>
                 <ul className="flex flex-wrap gap-2">
-                  {contactShellItems.map((item) => (
-                    <li key={item}>
-                      <span className="inline-flex min-h-10 items-center rounded-full border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted">
-                        {item}
-                      </span>
+                  {contact.links.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        target={link.href.startsWith("http") ? "_blank" : undefined}
+                        rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="inline-flex min-h-10 items-center rounded-full border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted transition-colors hover:border-border-strong hover:text-foreground"
+                      >
+                        {link.label}
+                      </a>
                     </li>
                   ))}
                 </ul>
