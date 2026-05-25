@@ -17,9 +17,43 @@ const monoFont = IBM_Plex_Mono({
   variable: "--font-ui-mono",
 });
 
+const _siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Personal Site",
-  description: "Phase 1 shell for a personal site built with Next.js, TypeScript, and Tailwind CSS.",
+  title: process.env.NEXT_PUBLIC_SITE_TITLE ?? "Personal Site",
+  description:
+    process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
+    "Phase 1 shell for a personal site built with Next.js, TypeScript, and Tailwind CSS.",
+  metadataBase: typeof process !== 'undefined' && _siteUrl ? new URL(_siteUrl) : undefined,
+  icons: {
+    icon: "/favicon.ico",
+  },
+  openGraph: {
+    title: process.env.NEXT_PUBLIC_SITE_TITLE ?? "Personal Site",
+    description:
+      process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
+      "Phase 1 shell for a personal site built with Next.js, TypeScript, and Tailwind CSS.",
+    url: _siteUrl,
+    siteName: process.env.NEXT_PUBLIC_SITE_TITLE ?? "Personal Site",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Personal site social preview",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: process.env.NEXT_PUBLIC_SITE_TITLE ?? "Personal Site",
+    description:
+      process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
+      "Phase 1 shell for a personal site built with Next.js, TypeScript, and Tailwind CSS.",
+    images: ["/og-image.png"],
+  },
 };
 
 type RootLayoutProps = {
