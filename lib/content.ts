@@ -105,3 +105,33 @@ export function getFeaturedWorkContent(): FeaturedWorkContent {
   assertShape(missing.length === 0, `Invalid featured-work.md frontmatter — missing/invalid: ${missing.join(", ")}`);
   return d as FeaturedWorkContent;
 }
+
+// ── Contact ──────────────────────────────────────────────────────────────────
+
+export type ContactLink = {
+  label: string;
+  href: string;
+};
+
+export type ContactContent = {
+  tagline: string;
+  links: ContactLink[];
+};
+
+export function getContactContent(): ContactContent {
+  const { data } = readContent("contact.md");
+  const d: any = data ?? {};
+  const missing: string[] = [];
+
+  if (!isString(d.tagline)) missing.push("tagline");
+  if (!Array.isArray(d.links)) missing.push("links");
+  else {
+    d.links.forEach((l: any, idx: number) => {
+      if (!isString(l?.label)) missing.push(`links[${idx}].label`);
+      if (!isString(l?.href)) missing.push(`links[${idx}].href`);
+    });
+  }
+
+  assertShape(missing.length === 0, `Invalid contact.md frontmatter — missing/invalid: ${missing.join(", ")}`);
+  return d as ContactContent;
+}
