@@ -79,24 +79,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <SiteContainer>
               <SurfaceCard className="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-end sm:justify-between">
                 <div className="space-y-2">
-                  <h2 id="contact-shell-heading" className="technical-label text-xs text-accent-magenta">
+                  <h2 className="technical-label text-xs text-accent-magenta">
                     Contact shell
                   </h2>
                   <p className="max-w-2xl text-sm text-foreground-muted">
                     Footer structure is in place for production contact links once Phase 1 shell work gives way to content and polish.
                   </p>
                 </div>
-                <section aria-labelledby="contact-shell-heading">
-                  <ul className="flex flex-wrap gap-2">
-                    {contactShellItems.map((item) => (
-                      <li key={item}>
-                        <span className="inline-flex min-h-10 items-center rounded-full border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
+                <ul className="flex flex-wrap gap-2">
+                  {contactShellItems.map((item) => (
+                    <li key={item}>
+                      <span className="inline-flex min-h-10 items-center rounded-full border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted">
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </SurfaceCard>
             </SiteContainer>
           </footer>
