@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Orbitron, Rajdhani } from "next/font/google";
 import type { ReactNode } from "react";
 import { getContactContent } from "../lib/content";
-import { SiteContainer, SurfaceCard } from "./components/site-primitives";
+import { SiteContainer } from "./components/site-primitives";
+import StatusBar from "./components/status-bar";
 import "./globals.css";
 
 const bodyFont = Inter({
@@ -16,6 +17,20 @@ const monoFont = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
   display: "swap",
   variable: "--font-ui-mono",
+});
+
+const headingFont = Orbitron({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-heading",
+});
+
+const labelFont = Rajdhani({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-label",
 });
 
 const _siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -62,18 +77,28 @@ type RootLayoutProps = {
 };
 
 const primaryNavItems = [
-  { href: "#hero", label: "Hero" },
-  { href: "#about", label: "About" },
-  { href: "#terminal", label: "Terminal" },
-  { href: "#featured-work", label: "Featured work" },
-  { href: "#contact", label: "Contact" },
+  { href: "#hero", label: "HOME", num: "01" },
+  { href: "#about", label: "ABOUT", num: "02" },
+  { href: "#now", label: "NOW", num: "03" },
+  { href: "#travel", label: "TRAVEL", num: "04" },
+  { href: "#music", label: "MUSIC", num: "05" },
+  { href: "#terminal", label: "TERMINAL", num: "06" },
 ] as const;
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const contact = getContactContent();
   return (
     <html lang="en">
-      <body className={[bodyFont.variable, monoFont.variable, "font-sans", "antialiased"].join(" ")}>
+      <body
+        className={[
+          bodyFont.variable,
+          monoFont.variable,
+          headingFont.variable,
+          labelFont.variable,
+          "font-sans",
+          "antialiased",
+        ].join(" ")}
+      >
         <a
           href="#main-content"
           className="absolute left-4 top-4 z-50 -translate-y-20 border border-border-strong bg-bg-elevated px-4 py-2 text-sm text-foreground transition-transform focus:translate-y-0"
@@ -81,58 +106,68 @@ export default function RootLayout({ children }: RootLayoutProps) {
           Skip to content
         </a>
         <div className="flex min-h-screen flex-col">
-          <header className="sticky top-0 z-40 py-4">
-            <SiteContainer>
-              <SurfaceCard className="flex flex-col gap-4 px-4 py-4 sm:px-5">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <a href="#hero" className="technical-label text-sm text-foreground">
-                    Personal site
+          {/* ── Header ─────────────────────────────────────────────── */}
+          <header className="sticky top-0 z-40">
+            {/* Hot pink top-edge accent line */}
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-accent-magenta to-transparent opacity-70" />
+            <div className="border-b border-border-subtle bg-bg-elevated/90 backdrop-blur-md">
+              <SiteContainer>
+                <div className="flex items-center justify-between gap-4 py-3">
+                  {/* Branding */}
+                  <a href="#hero" className="flex items-baseline gap-2 whitespace-nowrap">
+                    <span
+                      className="text-sm font-bold tracking-widest text-accent-magenta"
+                      style={{ fontFamily: "var(--font-heading)" }}
+                    >
+                      SCOTT TAYLOR
+                    </span>
+                    <span className="technical-label text-xs text-foreground-muted/50">
+                      // PERSONAL NODE
+                    </span>
                   </a>
-                  <nav aria-label="Primary" className="w-full sm:w-auto">
-                    <ul className="flex flex-wrap gap-2">
+                  {/* Nav */}
+                  <nav aria-label="Primary">
+                    <ul className="flex flex-wrap gap-1">
                       {primaryNavItems.map((item) => (
                         <li key={item.href}>
                           <a
                             href={item.href}
-                            className="inline-flex min-h-10 items-center border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted transition-colors hover:border-accent-cyan/50 hover:text-foreground"
+                            className="inline-flex min-h-8 items-center gap-1 border border-border-subtle bg-bg-elevated/50 px-3 py-1.5 text-xs text-foreground-muted transition-colors hover:border-accent-cyan/50 hover:text-accent-cyan"
+                            style={{ fontFamily: "var(--font-label)" }}
                           >
+                            <span className="text-accent-cyan/40">{item.num}_</span>
                             {item.label}
                           </a>
                         </li>
                       ))}
                     </ul>
                   </nav>
+                  {/* Contact links */}
+                  <ul className="hidden items-center gap-2 lg:flex">
+                    {contact.links.map((link) => (
+                      <li key={link.href}>
+                        <a
+                          href={link.href}
+                          target={link.href.startsWith("http") ? "_blank" : undefined}
+                          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                          className="technical-label text-xs text-foreground-muted/50 transition-colors hover:text-accent-cyan"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </SurfaceCard>
-            </SiteContainer>
+              </SiteContainer>
+            </div>
           </header>
-          <main id="main-content" className="flex-1 pb-12 pt-4">
+
+          <main id="main-content" className="flex-1 pb-8 pt-4">
             {children}
           </main>
-          <footer id="contact" className="pb-8 pt-4">
-            <SiteContainer>
-              <SurfaceCard className="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-end sm:justify-between">
-                <div className="space-y-2">
-                  <p className="technical-label text-xs text-accent-magenta">Contact</p>
-                  <p className="max-w-2xl text-sm text-foreground-muted">{contact.tagline}</p>
-                </div>
-                <ul className="flex flex-wrap gap-2">
-                  {contact.links.map((link) => (
-                    <li key={link.href}>
-                      <a
-                        href={link.href}
-                        target={link.href.startsWith("http") ? "_blank" : undefined}
-                        rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="inline-flex min-h-10 items-center border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted transition-colors hover:border-accent-cyan/50 hover:text-foreground"
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </SurfaceCard>
-            </SiteContainer>
-          </footer>
+
+          {/* ── Status bar replaces old footer ─────────────────────── */}
+          <StatusBar />
         </div>
       </body>
     </html>
