@@ -76,7 +76,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={[bodyFont.variable, monoFont.variable, "font-sans", "antialiased"].join(" ")}>
         <a
           href="#main-content"
-          className="absolute left-4 top-4 z-50 -translate-y-20 rounded-full border border-border-strong bg-bg-elevated px-4 py-2 text-sm text-foreground transition-transform focus:translate-y-0"
+          className="absolute left-4 top-4 z-50 -translate-y-20 border border-border-strong bg-bg-elevated px-4 py-2 text-sm text-foreground transition-transform focus:translate-y-0"
         >
           Skip to content
         </a>
@@ -94,7 +94,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                         <li key={item.href}>
                           <a
                             href={item.href}
-                            className="inline-flex min-h-10 items-center rounded-full border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted transition-colors hover:border-border-strong hover:text-foreground"
+                            className="inline-flex min-h-10 items-center border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted transition-colors hover:border-accent-cyan/50 hover:text-foreground"
                           >
                             {item.label}
                           </a>
@@ -123,7 +123,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                         href={link.href}
                         target={link.href.startsWith("http") ? "_blank" : undefined}
                         rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="inline-flex min-h-10 items-center rounded-full border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted transition-colors hover:border-border-strong hover:text-foreground"
+                        className="inline-flex min-h-10 items-center border border-border-subtle bg-bg-elevated/70 px-4 py-2 text-sm text-foreground-muted transition-colors hover:border-accent-cyan/50 hover:text-foreground"
                       >
                         {link.label}
                       </a>

@@ -30,8 +30,8 @@
   --site-space-gutter: clamp(1.25rem, 4vw, 2rem);
   --site-space-section: clamp(4rem, 10vw, 7rem);
   --site-space-stack: clamp(1rem, 2vw, 1.5rem);
-  --site-radius-panel: 1.5rem;
-  --site-radius-pill: 999px;
+  --site-radius-panel: 2px;
+  --site-radius-pill: 2px;
   --site-glow-soft: 0 0 0 1px rgba(103, 232, 249, 0.14), 0 24px 80px rgba(8, 15, 37, 0.55), 0 0 48px rgba(103, 232, 249, 0.08);
   --site-glow-focus: 0 0 0 1px rgba(103, 232, 249, 0.45), 0 0 0 4px rgba(103, 232, 249, 0.16);
   --site-grid-line: rgba(148, 163, 184, 0.08);
@@ -76,6 +76,21 @@ body::before {
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.68), transparent 100%);
   opacity: 0.65;
   animation: ambient-drift 24s linear infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.025) 0px,
+    rgba(0, 0, 0, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
 }
 
 ::selection {
@@ -126,8 +141,8 @@ samp,
   background: var(--site-color-surface);
   border: 1px solid var(--site-color-border-subtle);
   border-radius: var(--site-radius-panel);
-  box-shadow: var(--site-glow-soft);
-  backdrop-filter: blur(18px);
+  box-shadow: var(--site-glow-soft), inset 0 1px 0 rgba(103, 232, 249, 0.06);
+  backdrop-filter: blur(12px);
 }
 
 @utility technical-label {
