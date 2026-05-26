@@ -38,7 +38,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <img src="/images/hero.svg" alt="Decorative hero artwork" aria-hidden="true" className="w-full max-w-md rounded-xl shadow-lg" />
+                <img src="/images/me.jpg" alt="Decorative hero artwork" aria-hidden="true" className="w-full max-w-md rounded-xl shadow-lg" />
               </div>
             </div>
           </SurfaceCard>
