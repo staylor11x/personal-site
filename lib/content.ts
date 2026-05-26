@@ -106,7 +106,71 @@ export function getFeaturedWorkContent(): FeaturedWorkContent {
   return d as FeaturedWorkContent;
 }
 
-// ── Contact ──────────────────────────────────────────────────────────────────
+// ── Currently ─────────────────────────────────────────────────────────────────
+
+export type CurrentlyContent = {
+  learning: string[];
+  listening: string[];
+  building: string[];
+};
+
+export function getCurrentlyContent(): CurrentlyContent {
+  const { data } = readContent("currently.md");
+  const d: any = data ?? {};
+  return {
+    learning: Array.isArray(d.learning) ? d.learning : [],
+    listening: Array.isArray(d.listening) ? d.listening : [],
+    building: Array.isArray(d.building) ? d.building : [],
+  };
+}
+
+// ── Now Playing ───────────────────────────────────────────────────────────────
+
+export type NowPlayingContent = {
+  track: string;
+  artist: string;
+  album: string;
+  albumArt: string;
+  spotifyUrl: string;
+};
+
+export function getNowPlayingContent(): NowPlayingContent {
+  const { data } = readContent("now-playing.md");
+  const d: any = data ?? {};
+  return {
+    track: isString(d.track) ? d.track : "Unknown Track",
+    artist: isString(d.artist) ? d.artist : "Unknown Artist",
+    album: isString(d.album) ? d.album : "",
+    albumArt: isString(d.albumArt) ? d.albumArt : "",
+    spotifyUrl: isString(d.spotifyUrl) ? d.spotifyUrl : "",
+  };
+}
+
+// ── Travel ────────────────────────────────────────────────────────────────────
+
+export type Journey = {
+  year: string;
+  destination: string;
+};
+
+export type TravelContent = {
+  countriesVisited: number;
+  journeys: Journey[];
+};
+
+export function getTravelContent(): TravelContent {
+  const { data } = readContent("travel.md");
+  const d: any = data ?? {};
+  return {
+    countriesVisited: typeof d.countriesVisited === "number" ? d.countriesVisited : 0,
+    journeys: Array.isArray(d.journeys)
+      ? d.journeys.map((j: any) => ({
+          year: isString(j?.year) ? j.year : "",
+          destination: isString(j?.destination) ? j.destination : "",
+        }))
+      : [],
+  };
+}
 
 export type ContactLink = {
   label: string;
