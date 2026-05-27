@@ -1,5 +1,6 @@
 # Commands used to create GCP Infrastructure
 
+The `gsutil` command is out of date and no longer used.
 
 ### Creating the bucket
 
