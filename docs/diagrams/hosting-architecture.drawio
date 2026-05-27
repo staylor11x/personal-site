@@ -1,0 +1,89 @@
+<mxfile host="app.diagrams.net" agent="GitHub Copilot">
+  <diagram id="hosting-architecture" name="Hosting Architecture">
+    <mxGraphModel dx="912" dy="502" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1e3a5f;" value="Personal Site — Hosting Architecture" vertex="1">
+          <mxGeometry height="40" width="580" x="280" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" parent="1" style="shape=mxgraph.cisco.computers_and_peripherals.pc;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" value="Browser" vertex="1">
+          <mxGeometry height="60" width="60" x="524" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="cloudflare" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;arcSize=10;" value="Cloudflare&#xa;DNS · CDN · SSL" vertex="1">
+          <mxGeometry height="60" width="200" x="454" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" target="cloudflare">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=11;fontColor=light-dark(#555555,#F2F2F2);" value="FRONTEND" vertex="1">
+          <mxGeometry height="30" width="120" x="140" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="gcs" parent="1" style="shape=mxgraph.gcp2.storage;sketch=0;html=1;pointerEvents=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;verticalLabelPosition=bottom;verticalAlign=top;align=center;" value="Google Cloud Storage&#xa;(Static Export)" vertex="1">
+          <mxGeometry height="60" width="60" x="225" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="nextjs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#bdbdbd;fontStyle=2;fontSize=10;" value="Next.js&#xa;`next export`" vertex="1">
+          <mxGeometry height="40" width="90" x="120" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="cloudflare" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="gcs">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="390" y="240" />
+              <mxPoint x="254" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="be-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=11;fontColor=light-dark(#555555,#F2F2F2);" value="BACKEND" vertex="1">
+          <mxGeometry height="30" width="60" x="740" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="cloudrun" parent="1" style="shape=mxgraph.gcp2.run;sketch=0;html=1;pointerEvents=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=11;verticalLabelPosition=bottom;verticalAlign=top;align=center;" value="Google Cloud Run&#xa;(C++ Container)" vertex="1">
+          <mxGeometry height="60" width="60" x="804" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="cloudflare" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="cloudrun">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="240" />
+              <mxPoint x="834" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="spotify" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1DB954;strokeColor=#158a3e;fontColor=#ffffff;fontStyle=1;fontSize=11;" value="Spotify API" vertex="1">
+          <mxGeometry height="50" width="120" x="670" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="cloudrun" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" target="spotify">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="secrets" parent="1" style="shape=mxgraph.gcp2.key_management_service;sketch=0;html=1;pointerEvents=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;verticalLabelPosition=bottom;verticalAlign=top;align=center;" value="GCP Secret Manager&#xa;(Spotify tokens, API keys)" vertex="1">
+          <mxGeometry height="60" width="60" x="960" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="cloudrun" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;" target="secrets">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gha-fe" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontSize=10;" value="GitHub Actions&#xa;Frontend Pipeline" vertex="1">
+          <mxGeometry height="50" width="150" x="180" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="gha-be" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontSize=10;" value="GitHub Actions&#xa;Backend Pipeline" vertex="1">
+          <mxGeometry height="50" width="150" x="759" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="gha-fe" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=light-dark(#999999,#F5F5F5);" target="gcs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="gha-be" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=light-dark(#FFFFFF,#F5F5F5);labelBackgroundColor=light-dark(#FFFFFF,#F5F5F5);" target="cloudrun">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f9f9f9;strokeColor=#ccc;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="80" width="110" x="120" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontStyle=1;fontSize=10;" value="Legend" vertex="1">
+          <mxGeometry height="20" width="90" x="130" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-solid" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;" value="— live traffic" vertex="1">
+          <mxGeometry height="20" width="90" x="130" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-dashed" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=9;" value="- - deploy / inject" vertex="1">
+          <mxGeometry height="20" width="100" x="130" y="165" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
