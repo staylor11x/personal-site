@@ -4,7 +4,7 @@ description: "Use when creating or updating Markdown documentation, ADRs, runboo
 argument-hint: "Describe the documentation task, e.g., 'Create a runbook for certificate renewal' or 'Update the architecture doc to reflect the new ingress controller'"
 tools: [vscode, execute, read, edit, search, web, todo]
 model: [Claude Sonnet 4.6 (copilot)]
-user-invocable: false
+user-invocable: true
 ---
 
 # Documentation Agent Instructions
