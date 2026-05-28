@@ -28,6 +28,9 @@ jobs:
       - name: Build static export
         run: npm run build
 
+      - name: Check output
+        run: ls -la && ls -la out || echo "out/ does not exist" && ls -la .next || echo ".next does not exist"
+
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v3
         with:
