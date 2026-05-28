@@ -2,6 +2,9 @@
   "name": "personal-site",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +13,7 @@
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
-    "next": "latest",
+    "next": "16.2.6",
     "react": "latest",
     "react-dom": "latest"
   },
