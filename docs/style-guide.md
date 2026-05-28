@@ -1,6 +1,27 @@
-# DESIGN_CONSTITUTION.md
+> **Version:** 1.0
+> **Status:** Living document — updated when design decisions, tokens, or component conventions change
+> **Related:** [Architecture](architecture.md) | [Implementation phases](implementation-phases.md)
 
-## Core Identity
+# Style guide
+
+## Table of contents
+
+1. [Core identity](#core-identity)
+2. [Visual philosophy](#visual-philosophy)
+3. [Shape language](#shape-language)
+4. [Color system](#color-system)
+5. [Lighting](#lighting)
+6. [Typography](#typography)
+7. [HUD panel system](#hud-panel-system)
+8. [Navigation](#navigation)
+9. [Status bar](#status-bar)
+10. [Layout system](#layout-system)
+11. [Hero panel](#hero-panel)
+12. [Content panels](#content-panels)
+
+---
+
+## Core identity
 
 This website is a retro-futurist personal terminal node — a HUD-style dashboard that presents its owner as an operator of a living system, not just a visitor to a portfolio.
 
@@ -27,9 +48,9 @@ NOT:
 
 ---
 
-# Visual Philosophy
+## Visual philosophy
 
-## Primary Principles
+### Primary principles
 
 Prioritize:
 1. atmosphere — every element contributes to the world
@@ -48,9 +69,9 @@ Avoid playful, soft, or trend-driven styling.
 
 ---
 
-# Shape Language
+## Shape language
 
-## Geometry Rules
+### Geometry rules
 
 Use:
 - sharp edges (no oversized border-radius)
@@ -75,9 +96,9 @@ Avoid:
 
 ---
 
-# Color System
+## Color system
 
-## Exact Token Values
+### Exact token values
 
 ```
 Background:       #080E17  (near-black deep navy)
@@ -94,7 +115,7 @@ Foreground:       #E8EDF5  (off-white)
 Foreground Muted: #8899AA  (cool gray)
 ```
 
-## CSS Variable Names
+### CSS variable names
 
 ```css
 --color-background:      #080E17
@@ -108,17 +129,17 @@ Foreground Muted: #8899AA  (cool gray)
 --color-border-subtle:   rgba(0,240,255,0.12)
 ```
 
-## Color Rules
+### Color rules
 
 Accent colors are used sparingly and purposefully:
 
-| Accent  | Primary use                                   |
-|---------|-----------------------------------------------|
-| Cyan    | Panel borders, data labels, system info       |
-| Pink    | Hero name, identity-level headlines           |
-| Green   | ONLINE badges, success states, CTAs           |
-| Magenta | Secondary buttons, gradient partner to pink   |
-| Blue    | Structural depth, background gradients        |
+| Accent | Primary use |
+|---|---|
+| Cyan | Panel borders, data labels, system info |
+| Pink | Hero name, identity-level headlines |
+| Green | ONLINE badges, success states, CTAs |
+| Magenta | Secondary buttons, gradient partner to pink |
+| Blue | Structural depth, background gradients |
 
 Neon should:
 - guide attention
@@ -137,7 +158,7 @@ Dark surfaces dominate. Neon is the accent, not the base.
 
 ---
 
-# Lighting
+## Lighting
 
 Use:
 - `box-shadow` edge glow on panels and interactive elements
@@ -159,18 +180,18 @@ Avoid:
 
 ---
 
-# Typography
+## Typography
 
-## Font Stack
+### Font stack
 
-| Role      | Font        | Variable           | Use                                   |
-|-----------|-------------|---------------------|---------------------------------------|
-| Heading   | **Orbitron** | `--font-heading`   | Hero name, section callouts           |
-| Label     | **Rajdhani** | `--font-label`     | Nav items, button text, system labels |
+| Role | Font | Variable | Use |
+|---|---|---|---|
+| Heading | **Orbitron** | `--font-heading` | Hero name, section callouts |
+| Label | **Rajdhani** | `--font-label` | Nav items, button text, system labels |
 | Monospace | **JetBrains Mono** | `--font-ui-mono` | Terminal, metadata, technical labels |
-| Body      | **Geist**   | system fallback     | Long-form text, paragraph content     |
+| Body | **Geist** | system fallback | Long-form text, paragraph content |
 
-## Typography Rules
+### Typography rules
 
 **Orbitron** — used for the primary identity heading (hero name) only. It is large, uppercase, black-weight, and gradient-colored. Do not use it for body or navigation.
 
@@ -194,9 +215,9 @@ Avoid:
 
 ---
 
-# HUD Panel System
+## HUD panel system
 
-## The `HudPanel` Component
+### The `HudPanel` component
 
 All content sections are wrapped in `HudPanel` — the core UI primitive of the design system.
 
@@ -230,9 +251,9 @@ The `hud-panel` CSS utility:
 
 ---
 
-# Navigation
+## Navigation
 
-## Identity Branding
+### Identity branding
 
 The site nav reads:
 ```
@@ -253,7 +274,7 @@ Mobile: hamburger menu, same branding visible at all sizes.
 
 ---
 
-# Status Bar
+## Status bar
 
 The site footer is a live `StatusBar` client component — not a traditional footer.
 
@@ -270,9 +291,9 @@ The status bar reinforces the "living terminal" identity of the site. It is neve
 
 ---
 
-# Layout System
+## Layout system
 
-## Dashboard Grid
+### Dashboard grid
 
 The homepage uses a stacked dashboard layout:
 1. **Hero panel** — full-width, 3-column internal grid
@@ -283,10 +304,10 @@ The homepage uses a stacked dashboard layout:
 
 All sections use `HudPanel`. Spacing between panels: `gap-4` (16px).
 
-## Spacing Rules
+### Spacing rules
 
 Layouts should:
-- breathe — generous internal padding (p-5, p-6, sm:p-8)
+- breathe — generous internal padding (`p-5`, `p-6`, `sm:p-8`)
 - align strongly — grid-based column structure
 - feel architectural — panels feel like hardware modules, not cards
 - maintain visual rhythm — consistent `gap-4` between sections
@@ -298,9 +319,9 @@ Avoid:
 
 ---
 
-# Hero Panel
+## Hero panel
 
-## Structure
+### Structure
 
 The hero is a single `HudPanel` with `accentColor="pink"`, divided into three columns:
 
@@ -321,16 +342,16 @@ The hero is a single `HudPanel` with `accentColor="pink"`, divided into three co
 
 ---
 
-# Content Panels
+## Content panels
 
-## Currently Panel
+### Currently panel
 
 Displays three lists: LEARNING / LISTENING / BUILDING.
 - Each list uses a cyan accent header in Rajdhani
 - Items as monospace `>` prefixed lines
 - `accentColor="green"` on its `HudPanel`
 
-## Now Playing Panel
+### Now playing panel
 
 Displays the current/recent track from `content/now-playing.md`.
 - Track name prominent, artist secondary
@@ -339,181 +360,9 @@ Displays the current/recent track from `content/now-playing.md`.
 - `accentColor="pink"` on its `HudPanel`
 - When Spotify Live API is integrated later, this panel updates in real-time
 
-## Travel Panel
+### Travel panel
 
 Displays countries visited count and journey log from `content/travel.md`.
 - Left: CSS globe placeholder (SVG arcs, glowing points)
 - Right: journey log as `YEAR — DESTINATION` rows
 - Globe is `position: relative` container required for absolute SVG
-
----
-
-# Synthwave Hero Image
-
-The synthwave image scene (CSS placeholder):
-- Background gradient: dark purple (`#0a0520`) → deep purple → sunset horizon
-- Grid floor: `perspective(200px) rotateX(40deg)` with pink grid lines
-- Sun: radial gradient orange → pink with `box-shadow` glow
-- Scanlines: `repeating-linear-gradient` overlay at 20% opacity
-
-This scene is always rendered as the fallback. A real photograph or illustration at `/public/images/hero-synthwave.jpg` will overlay it when present.
-
----
-
-# Terminal Design
-
-The terminal is a core identity element — the most direct expression of the "personal node" concept.
-
-It should feel:
-- authentic and operational
-- fast and responsive
-- minimal — the content is the interface
-
-Use:
-- JetBrains Mono throughout
-- `>` prompt prefix
-- cursor blink animation (`cursor-blink` CSS utility)
-- green-on-dark for active output
-- cyan for system responses
-
-Avoid:
-- fake hacker spam or random characters
-- excessive Matrix-style effects
-- green-only terminal clichés
-- simulated "hacking" tropes
-
----
-
-# Backgrounds
-
-The site background is:
-- `#080E17` base
-- Layered with a subtle radial gradient from dark blue-purple at center, fading to near-black at edges
-- Optional: very faint `noise` texture or `repeating-linear-gradient` grid overlay at <5% opacity
-
-Avoid:
-- flat white sections
-- bright or light backgrounds anywhere in the design
-- heavy blur mesh gradients
-- generic SaaS gradient washes
-
----
-
-# Motion Design
-
-Motion should feel:
-- mechanical and system-driven
-- intentional — every animation has a purpose
-- subtle — the content moves, the atmosphere doesn't
-
-Use:
-- `accent-pulse` keyframe: gentle periodic box-shadow glow on panels
-- `cursor-blink` keyframe: terminal cursor opacity cycle
-- `scan-line` keyframe: optional top-to-bottom scan effect
-- hover transitions: `transition-all` with 150–200ms duration
-- subtle border-color / shadow shifts on hover
-
-Avoid:
-- bounce or spring animations
-- floaty or elastic motion
-- exaggerated scaling on hover
-- entry animations that delay content visibility
-- playful or whimsical interactions
-
-Always respect `prefers-reduced-motion`. All decorative animations should be conditioned on `@media (prefers-reduced-motion: no-preference)`.
-
----
-
-# Buttons and CTAs
-
-Buttons should feel tactile and industrial:
-
-**Primary CTA** (green): `border border-accent-green/60 bg-accent-green/5 text-accent-green` with hover glow `shadow-[0_0_12px_rgba(57,255,20,0.2)]`
-
-**Secondary CTA** (magenta): `border border-accent-magenta/40 bg-accent-magenta/5 text-accent-magenta` with subtle hover intensification
-
-All button text:
-- Rajdhani font
-- Uppercase
-- `letter-spacing: 0.1em`
-- `>` prefix (CLI convention)
-
-Avoid:
-- rounded pill buttons
-- gradient-filled buttons
-- oversized CTAs
-- soft hover shadows
-
----
-
-# Accessibility
-
-Despite the aesthetic, the following are non-negotiable:
-- Text contrast must meet WCAG AA against dark backgrounds
-- All interactive elements must be keyboard-navigable
-- Motion must be reducible via `prefers-reduced-motion`
-- Mobile layouts must remain fully usable
-- Screen reader labels must be present on all icon-only UI
-
-Never sacrifice usability for atmosphere.
-
----
-
-# Performance Rules
-
-The aesthetic must not cost performance:
-- Use CSS animations and keyframes over JavaScript animation libraries
-- Use `backdrop-filter` sparingly (causes GPU paint)
-- Avoid particle systems or WebGL unless explicitly required
-- No heavy autoplay effects
-- Images must be optimised; the CSS hero scene is the approved zero-cost fallback
-
-Performance is part of the aesthetic. A slow site breaks the "precision engineering" identity.
-
----
-
-# Forbidden Patterns
-
-Never introduce:
-- pastel-heavy or warm-toned UI
-- oversized rounded cards or pill shapes
-- startup SaaS or generic portfolio aesthetics
-- glassmorphism overload (multiple stacked blur + white opacity layers)
-- emoji-heavy or illustrative interfaces
-- random neon that doesn't map to the token system
-- generic cyberpunk clichés (green matrix rain, skull logos)
-- cluttered or information-dense dashboards without visual hierarchy
-- inconsistent spacing or competing grid systems
-- multiple typeface personalities in one section
-- Orbitron used outside the hero identity context
-
----
-
-# Emotional Goal
-
-Visitors should feel:
-- **curiosity** — what does this person build?
-- **atmosphere** — this feels like a place, not a page
-- **technical confidence** — the operator knows what they're doing
-- **individuality** — this is clearly one person's space, not a template
-
-The website should feel like:
-> a precision-engineered personal terminal — atmospheric, inhabited, and alive
-
-NOT:
-> a frontend trends showcase or a portfolio template with dark mode
-
----
-
-# Final Rule
-
-Every new feature, component, animation, or section must answer:
-
-1. Does this strengthen the synthwave retro-futurist identity?
-2. Does this feel engineered and intentional — not decorative for decoration's sake?
-3. Is this visually consistent with the HUD panel system?
-4. Does this use only the defined color token system?
-5. Is the effect subtle enough to remain professional and readable?
-6. Does this improve atmosphere without harming usability or performance?
-
-If any answer is "no", redesign it.

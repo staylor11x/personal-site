@@ -1,4 +1,8 @@
-# Issue Template
+> **Version:** 1.0
+> **Status:** Living document — updated when issue conventions change
+> **Related:** [Implementation phases](../implementation-phases.md)
+
+# Issue template
 
 > This template defines the required structure for all agent-targeted issues
 > in this repository. AI tools generating issues must follow this format exactly.

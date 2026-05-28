@@ -1,4 +1,8 @@
-# Personal Site Implementation Phases
+> **Version:** 1.0
+> **Status:** Living document — updated when phase scope or delivery order changes
+> **Related:** [Architecture](architecture.md) | [Issue template](templates/issue-template.md)
+
+# Personal Site implementation phases
 
 ## Objective
 
