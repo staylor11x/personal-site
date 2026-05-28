@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Documentation standards and judgment guide for the personal-site repository. Load when creating or maintaining any documentation — architecture, hosting, CI/CD, style guide, or issue templates.
+description: Documentation standards and judgment guide for the personal-site repository. Load when creating or maintaining any documentation — architecture, hosting, CI/CD, style guide, ADRs, or issue templates.
 ---
 
 # Documentation Skill
@@ -30,6 +30,7 @@ This file encodes the documentation standards and judgment conventions for the p
 | Document type | Location | Audience | Living or point-in-time |
 |---|---|---|---|
 | Architecture | `docs/architecture.md` | All contributors | Living |
+| Architecture Decision Record | `docs/adrs/ADR-NNN-title.md` | All contributors | Point-in-time |
 | Hosting setup | `docs/hosting-setup.md` | Operators | Living |
 | CI/CD pipeline | `docs/ci-cd-pipeline.md` | All contributors | Living |
 | Style guide | `docs/style-guide.md` | Implementer agent, contributors | Living |
@@ -38,9 +39,10 @@ This file encodes the documentation standards and judgment conventions for the p
 | Diagram export | `docs/diagrams/*.png` | All consumers | Derived — human export step required |
 | Documentation registry | `docs/registry.md` | All contributors | Living |
 | Issue template | `docs/templates/issue-template.md` | All contributors | Living |
+| ADR template | `docs/templates/adr-template.md` | All contributors | Living |
 | Repository README | `README.md` | All visitors | Living |
 
-This project does not use ADRs or runbooks. A living document is updated whenever the system or process it describes changes. A point-in-time document captures a decision or state at a specific moment and is not edited after acceptance.
+This project does not use runbooks. A living document is updated whenever the system or process it describes changes. A point-in-time document captures a decision or state at a specific moment and is not edited after acceptance.
 
 ---
 
