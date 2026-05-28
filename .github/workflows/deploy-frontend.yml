@@ -32,7 +32,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/78372225567/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider
-          service_account: github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com
+          service_account: github-actions-deploy@personal-site-497615.iam.gserviceaccount.com
 
       - name: Upload to GCS
         uses: google-github-actions/upload-cloud-storage@v2
