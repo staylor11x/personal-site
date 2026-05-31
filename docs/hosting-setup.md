@@ -1,10 +1,10 @@
-> **Version:** 1.0
-> **Status:** Living document — updated when the GCS or Cloudflare configuration changes
+> **Version:** 1.1
+> **Status:** Living document — updated when the GCS, Cloud Run, or Cloudflare configuration changes
 > **Related:** [Architecture](architecture.md) | [CI/CD pipeline](ci-cd-pipeline.md)
 
 # Hosting setup
 
-Documents the end-to-end configuration for hosting the static site on Google Cloud Storage with Cloudflare handling DNS, HTTPS, and CDN.
+Documents the end-to-end configuration for hosting the static site on Google Cloud Storage and the API backend on Cloud Run, with Cloudflare handling DNS, HTTPS, and CDN.
 
 ## Table of contents
 
@@ -15,6 +15,7 @@ Documents the end-to-end configuration for hosting the static site on Google Clo
 5. [HTTPS](#5-https)
 6. [Reference commands](#6-reference-commands)
 7. [Verification checklist](#7-verification-checklist)
+8. [Backend service](#8-backend-service)
 
 ---
 
@@ -156,3 +157,156 @@ gcloud storage buckets update gs://www.scott-taylor11.com \
 - [ ] `https://scott-taylor11.com` redirects to `https://www.scott-taylor11.com` (301)
 - [ ] Assets (`_next/static/`) load without 404s (check browser DevTools Network tab)
 - [ ] No mixed-content warnings in the browser console
+
+---
+
+## 8. Backend service
+
+The API backend is a C++ (Drogon) service running on Cloud Run in `europe-west2`. It proxies Spotify's now-playing API using credentials stored in Secret Manager.
+
+### Architecture
+
+```mermaid
+flowchart LR
+    subgraph Client
+        U[Browser / curl]
+    end
+
+    subgraph Cloudflare
+        W["Worker\napi.scott-taylor11.com"]
+    end
+
+    subgraph GCP ["GCP — europe-west2"]
+        CR["Cloud Run\npersonal-site-backend"]
+        AR["Artifact Registry\nbackend repo"]
+        SA["Service Account\ncloud-run-backend"]
+        SM["Secret Manager\n3 Spotify secrets"]
+    end
+
+    SP[Spotify API]
+
+    U -->|HTTPS| W
+    W -->|proxies with correct Host header| CR
+    CR -->|runs as| SA
+    SA -->|secretAccessor on 3 secrets| SM
+    SM -->|credentials| CR
+    CR -->|image pull at deploy| AR
+    CR -->|token exchange + now-playing| SP
+```
+
+#### Why a Cloudflare Worker, not a GCP Load Balancer
+
+Cloud Run domain mappings are not supported in `europe-west2`. The alternative — a GCP HTTPS Load Balancer with a serverless NEG — costs approximately $18/month in forwarding rule fees regardless of traffic. A Cloudflare Worker (free tier: 100k requests/day) achieves the same result: it rewrites the `Host` header so Cloud Run receives the request against its own `*.a.run.app` hostname rather than `api.scott-taylor11.com`, which Cloud Run would otherwise reject with a 404.
+
+---
+
+### 8.1 Artifact Registry
+
+Create the repository and configure Docker authentication:
+
+```bash
+gcloud artifacts repositories create backend \
+  --repository-format=docker \
+  --location=europe-west2 \
+  --description="Personal site backend images"
+
+gcloud auth configure-docker europe-west2-docker.pkg.dev
+```
+
+---
+
+### 8.2 Service account and IAM
+
+Create a service account with the minimum permissions required. Bind `roles/secretmanager.secretAccessor` on each secret individually — do not grant project-wide access.
+
+```bash
+gcloud iam service-accounts create cloud-run-backend \
+  --display-name="Cloud Run backend"
+```
+
+Then for each of the three Spotify secrets (`spotify-client-id`, `spotify-client-secret`, `spotify-refresh-token`):
+
+```bash
+gcloud secrets add-iam-policy-binding <SECRET_NAME> \
+  --project=personal-site-497615 \
+  --member="serviceAccount:cloud-run-backend@personal-site-497615.iam.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+```
+
+---
+
+### 8.3 Build and push the image
+
+Run from the `backend/` directory:
+
+```bash
+docker build -t europe-west2-docker.pkg.dev/personal-site-497615/backend/personal-site-backend:latest .
+
+docker push europe-west2-docker.pkg.dev/personal-site-497615/backend/personal-site-backend:latest
+```
+
+---
+
+### 8.4 Deploy to Cloud Run
+
+```bash
+gcloud run deploy personal-site-backend \
+  --image=europe-west2-docker.pkg.dev/personal-site-497615/backend/personal-site-backend:latest \
+  --region=europe-west2 \
+  --service-account=cloud-run-backend@personal-site-497615.iam.gserviceaccount.com \
+  --max-instances=3 \
+  --allow-unauthenticated \
+  --port=8080
+```
+
+Key flags:
+
+| Flag | Reason |
+|---|---|
+| `--service-account` | Runs as the scoped SA, not the default Compute SA |
+| `--max-instances=3` | Caps cost; no `--min-instances` so the service scales to zero |
+| `--allow-unauthenticated` | Public API — no bearer token required on requests |
+
+The command outputs the service URL (`https://personal-site-backend-<hash>-nw.a.run.app`). Note this value — it is needed for the Worker.
+
+---
+
+### 8.5 Cloudflare Worker
+
+The Worker proxies `api.scott-taylor11.com` to the Cloud Run service URL, rewriting the hostname so Cloud Run accepts the request.
+
+**Create the Worker** in the Cloudflare dashboard → **Workers & Pages → Create → Create Worker**. Replace the default script with:
+
+```js
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    url.hostname = "personal-site-backend-<hash>-nw.a.run.app";
+
+    const newRequest = new Request(url.toString(), {
+      method: request.method,
+      headers: request.headers,
+      body: request.body,
+    });
+
+    return fetch(newRequest);
+  },
+};
+```
+
+Replace `personal-site-backend-<hash>-nw.a.run.app` with the actual service URL from the deploy step.
+
+**Route the Worker** under **Settings → Domains & Routes → Add Custom Domain**: enter `api.scott-taylor11.com`. Cloudflare manages the DNS record automatically.
+
+---
+
+### 8.6 Verification
+
+```bash
+# Health check — expects HTTP 200 {"status":"ok"}
+curl https://api.scott-taylor11.com/health
+
+# Now playing — expects HTTP 200 with track JSON (Spotify must be active)
+# or HTTP 204 No Content when nothing is playing
+curl https://api.scott-taylor11.com/api/now-playing
+```
