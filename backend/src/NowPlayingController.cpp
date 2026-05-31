@@ -22,6 +22,16 @@ static HttpResponsePtr makeUpstreamFailureResponse() {
   return r;
 }
 
+static HttpResponsePtr makeNotPlayingResponse() {
+  Json::Value out;
+  out["playing"] = false;
+  auto r = HttpResponse::newHttpJsonResponse(out);
+  r->addHeader("Access-Control-Allow-Origin", "https://www.scott-taylor11.com");
+  r->addHeader("Access-Control-Allow-Methods", "GET");
+  r->setStatusCode(k204NoContent);
+  return r;
+}
+
 void NowPlayingController::nowPlaying(
     const HttpRequestPtr& req,
     std::function<void(const HttpResponsePtr&)>&& callback) {
@@ -62,13 +72,7 @@ void NowPlayingController::nowPlaying(
     }
 
     if (statusCode == 204) {
-      Json::Value out;
-      out["playing"] = false;
-      auto r = HttpResponse::newHttpJsonResponse(out);
-      r->addHeader("Access-Control-Allow-Origin", "https://www.scott-taylor11.com");
-      r->addHeader("Access-Control-Allow-Methods", "GET");
-      r->setStatusCode(k204NoContent);
-      callback(r);
+      callback(makeNotPlayingResponse());
       return;
     }
 
@@ -90,7 +94,11 @@ void NowPlayingController::nowPlaying(
     if (root.isMember("is_playing") && root["is_playing"].isBool()) {
       isPlaying = root["is_playing"].asBool();
     }
-    if (!isPlaying || !root.isMember("item") || !root["item"].isObject()) {
+    if (!isPlaying) {
+      callback(makeNotPlayingResponse());
+      return;
+    }
+    if (!root.isMember("item") || !root["item"].isObject()) {
       callback(makeUpstreamFailureResponse());
       return;
     }

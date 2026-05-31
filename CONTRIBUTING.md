@@ -59,3 +59,14 @@ curl -i http://localhost:8080/api/now-playing
 ```
 
 See [backend/SETUP.md](backend/SETUP.md) for GCP project setup, Secret Manager provisioning, and Spotify OAuth steps.
+
+## Next.js frontend
+
+The frontend is a Next.js app at the repository root. To run the development server:
+
+```bash
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000 in your browser. The dev server supports hot reload.
