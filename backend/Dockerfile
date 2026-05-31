@@ -2,7 +2,7 @@
 FROM debian:bookworm-slim AS builder
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  build-essential cmake git ca-certificates libssl-dev zlib1g-dev libjsoncpp-dev pkg-config libfmt-dev wget uuid-dev && \
+  build-essential cmake git ca-certificates libssl-dev zlib1g-dev libjsoncpp-dev pkg-config libfmt-dev wget uuid-dev libcurl4-openssl-dev && \
   rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
