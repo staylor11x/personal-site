@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter, Orbitron, Rajdhani } from "next/font/google";
 import type { ReactNode } from "react";
 import { getContactContent } from "../lib/content";
+import MobileNav from "./components/mobile-nav";
 import { SiteContainer } from "./components/site-primitives";
 import StatusBar from "./components/status-bar";
 import "./globals.css";
@@ -125,8 +126,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
                       // PERSONAL NODE
                     </span>
                   </a>
-                  {/* Nav */}
-                  <nav aria-label="Primary">
+                  {/* Nav — desktop (md+) */}
+                  <nav aria-label="Primary" className="hidden md:block">
                     <ul className="flex flex-wrap gap-1">
                       {primaryNavItems.map((item) => (
                         <li key={item.href}>
@@ -142,6 +143,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
                       ))}
                     </ul>
                   </nav>
+                  {/* Nav — mobile (< md) */}
+                  <MobileNav items={[...primaryNavItems]} />
                   {/* Contact links */}
                   <ul className="hidden items-center gap-2 lg:flex">
                     {contact.links.map((link) => (

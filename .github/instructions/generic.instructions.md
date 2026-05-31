@@ -25,6 +25,7 @@ description: "General repository guidance for the personal site project. Applies
 - Prefer server components by default and add client components only when interaction requires them.
 - Keep motion subtle and respect reduced-motion preferences.
 - Avoid heavyweight dependencies unless they materially improve delivery or maintainability.
+- **C++ backend development must use Docker. Never attempt native Windows builds.** See `CONTRIBUTING.md` for the correct build and smoke test workflow.
 
 ## UX guidance
 

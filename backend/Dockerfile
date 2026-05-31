@@ -13,7 +13,7 @@ RUN mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --bu
 # Runtime stage
 FROM debian:bookworm-slim
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates libstdc++6 libssl3 libjsoncpp25 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates libstdc++6 libssl3 libjsoncpp25 libcurl4 && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --system appuser && useradd --system --gid appuser appuser
 

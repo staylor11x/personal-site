@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "compileCommands": "${workspaceFolder}/backend/build/compile_commands.json",
+      "intelliSenseMode": "linux-gcc-x64",
+      "compilerPath": "/usr/bin/g++",
+      "includePath": [
+        "${workspaceFolder}/backend",
+        "${workspaceFolder}/backend/include",
+        "${workspaceFolder}/**",
+        "/usr/include",
+        "/usr/local/include"
+      ],
+      "browse": {
+        "path": [
+          "${workspaceFolder}/backend",
+          "${workspaceFolder}/backend/include",
+          "/usr/include",
+          "/usr/local/include"
+        ]
+      }
+    }
+  ],
+  "version": 4
+}
