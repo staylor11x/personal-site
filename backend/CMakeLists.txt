@@ -4,22 +4,27 @@ set(CMAKE_CXX_STANDARD 17)
 
 include(FetchContent)
 
+# Shallow clone — no history needed, cuts clone time significantly
 FetchContent_Declare(
   drogon
   GIT_REPOSITORY https://github.com/drogonframework/drogon.git
   GIT_TAG v1.9.10
+  GIT_SHALLOW TRUE
 )
 
 FetchContent_MakeAvailable(drogon)
 
-# Fetch google-cloud-cpp (only enable Secret Manager component)
-FetchContent_Declare(
-  google_cloud_cpp
-  GIT_REPOSITORY https://github.com/googleapis/google-cloud-cpp.git
-  GIT_TAG v2.13.0
+find_package(CURL REQUIRED)
+
+add_executable(backend
+  src/main.cpp
+  src/SpotifyAuth.cpp
+  src/NowPlayingController.cpp
 )
-# Prefer bundled dependency provider to simplify builder stage
-set(FETCHCONTENT_QUIET OFF)
-set(GOOGLE_CLOUD_CPP_DEPENDENCY_PROVIDER bundled CACHE STRING )
-set(BUILD_SHARED_LIBS ON CACHE BOOL )
-set(GOOGLE_CLOUD_CPP_ENABLE_SECRET_MANAGER ON CACHE BOOL Enable
+
+target_include_directories(backend PRIVATE src)
+
+target_link_libraries(backend PRIVATE
+  drogon
+  CURL::libcurl
+)

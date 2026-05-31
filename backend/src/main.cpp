@@ -5,11 +5,11 @@ using namespace drogon;
 
 int main() {
   app().registerHandler("/health",
-    [](const HttpRequestPtr& req, std::function<void (const HttpResponsePtr &)> &&callback){
+    [](const HttpRequestPtr& req,
+       std::function<void(const HttpResponsePtr&)>&& callback) {
       Json::Value ret;
       ret["status"] = "ok";
-      auto resp = HttpResponse::newHttpJsonResponse(ret);
-      callback(resp);
+      callback(HttpResponse::newHttpJsonResponse(ret));
     }, {Get});
 
   app().addListener("0.0.0.0", 8080);
