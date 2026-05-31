@@ -1,4 +1,4 @@
-> **Version:** 1.1
+> **Version:** 1.2
 > **Status:** Living document — updated when the GCS, Cloud Run, or Cloudflare configuration changes
 > **Related:** [Architecture](architecture.md) | [CI/CD pipeline](ci-cd-pipeline.md)
 
@@ -297,6 +297,30 @@ export default {
 Replace `personal-site-backend-<hash>-nw.a.run.app` with the actual service URL from the deploy step.
 
 **Route the Worker** under **Settings → Domains & Routes → Add Custom Domain**: enter `api.scott-taylor11.com`. Cloudflare manages the DNS record automatically.
+
+#### CORS handling
+
+`NowPlayingController.cpp` sets the following headers on **every response path** (200, 204, and 502):
+
+```
+Access-Control-Allow-Origin: https://www.scott-taylor11.com
+Access-Control-Allow-Methods: GET
+```
+
+The Worker passes these headers through unchanged. It does not need to add, overwrite, or strip CORS headers.
+
+**Preflight (OPTIONS) behaviour**
+
+The browser only sends an OPTIONS preflight before a cross-origin request if that request is not a [simple request](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#simple_requests). A plain `fetch('https://api.scott-taylor11.com/api/now-playing')` with no custom request headers qualifies as a simple request, so no preflight is issued and the current setup is sufficient.
+
+**Known gap — no OPTIONS handler in the controller**
+
+The C++ controller registers only `GET` for `/api/now-playing`. There is no `OPTIONS` handler and `Access-Control-Allow-Headers` is not set on any response. This is safe as long as the frontend makes simple requests. If a future change adds a custom request header (e.g. `X-Requested-With`, a bearer token, or `Content-Type: application/json`), the browser will issue a preflight the controller cannot satisfy. At that point the controller must be updated to:
+
+1. Register an `OPTIONS` handler for `/api/now-playing` that returns `204` with the appropriate `Access-Control-Allow-Headers` value.
+2. Add `Access-Control-Allow-Headers` to all existing response paths.
+
+Until that change is needed, no action is required.
 
 ---
 
