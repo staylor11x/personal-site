@@ -1,0 +1,9 @@
+build/
+CMakeFiles/
+CMakeCache.txt
+*.o
+*.obj
+*.log
+.git
+.gitignore
+.DS_Store
