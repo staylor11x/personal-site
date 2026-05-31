@@ -12,6 +12,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(drogon)
 
-add_executable(backend src/main.cpp)
-target_link_libraries(backend PRIVATE drogon)
-set_target_properties(backend PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+# Fetch google-cloud-cpp (only enable Secret Manager component)
+FetchContent_Declare(
+  google_cloud_cpp
+  GIT_REPOSITORY https://github.com/googleapis/google-cloud-cpp.git
+  GIT_TAG v2.13.0
+)
+# Prefer bundled dependency provider to simplify builder stage
+set(FETCHCONTENT_QUIET OFF)
+set(GOOGLE_CLOUD_CPP_DEPENDENCY_PROVIDER bundled CACHE STRING )
+set(BUILD_SHARED_LIBS ON CACHE BOOL )
+set(GOOGLE_CLOUD_CPP_ENABLE_SECRET_MANAGER ON CACHE BOOL Enable

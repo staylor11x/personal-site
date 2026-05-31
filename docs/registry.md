@@ -1,6 +1,6 @@
 # Documentation registry
 
-> **Version:** 1.1
+> **Version:** 1.2
 > **Status:** Living document — updated whenever a living document is created, modified, or removed
 > **Related:** [Architecture](architecture.md)
 
@@ -18,5 +18,6 @@ The authoritative index of every living document in the repository. Update this 
 | [docs/style-guide.md](style-guide.md) | Design identity, color tokens, typography, component conventions | 1.0 | 2026-05-28 | Design system or component conventions change |
 | [docs/templates/adr-template.md](templates/adr-template.md) | Template for new Architecture Decision Records | 1.0 | 2026-05-28 | ADR conventions change |
 | [docs/templates/issue-template.md](templates/issue-template.md) | Required structure for agent-targeted GitHub issues | 1.0 | 2026-05-28 | Issue conventions change |
+| [backend/SETUP.md](../backend/SETUP.md) | GCP setup, Spotify OAuth flow, Secret Manager provisioning, local dev and Cloud Run deploy steps | 1.0 | 2026-05-31 | GCP project, secrets, SA, or local dev workflow changes |
 | [README.md](../README.md) | Repository overview and quick-start | — | — | Project purpose or setup steps change |
 
