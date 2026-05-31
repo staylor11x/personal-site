@@ -1,6 +1,6 @@
 # Documentation registry
 
-> **Version:** 1.3
+> **Version:** 1.5
 > **Status:** Living document — updated whenever a living document is created, modified, or removed
 > **Related:** [Architecture](architecture.md)
 
@@ -13,7 +13,7 @@ The authoritative index of every living document in the repository. Update this 
 | [docs/architecture.md](architecture.md) | Hosting architecture, tech stack, cost profile, phased rollout | 1.0 | 2026-05-28 | Architecture or stack changes |
 | [docs/adrs/ADR-001-cpp-cloud-run-backend.md](adrs/ADR-001-cpp-cloud-run-backend.md) | Decision to use C++ (Drogon) on Cloud Run for the Spotify proxy backend | — | 2026-05-28 | Point-in-time — not updated after acceptance |
 | [docs/ci-cd-pipeline.md](ci-cd-pipeline.md) | GitHub Actions deploy workflow, OIDC/WIF auth, GCS sync | 1.0 | 2026-05-28 | Workflow or auth configuration changes |
-| [docs/hosting-setup.md](hosting-setup.md) | GCS bucket setup, Cloudflare DNS, redirect rules, HTTPS | 1.0 | 2026-05-28 | Hosting infrastructure changes |
+| [docs/hosting-setup.md](hosting-setup.md) | GCS bucket setup, Cloudflare DNS, redirect rules, HTTPS, Cloud Run backend service, Cloudflare Worker routing | 1.2 | 2026-05-31 | Hosting infrastructure changes |
 | [docs/implementation-phases.md](implementation-phases.md) | Phase-by-phase delivery plan and MVP boundary | 1.0 | 2026-05-28 | Scope, phase order, or exit criteria change |
 | [docs/style-guide.md](style-guide.md) | Design identity, color tokens, typography, component conventions | 1.0 | 2026-05-28 | Design system or component conventions change |
 | [docs/templates/adr-template.md](templates/adr-template.md) | Template for new Architecture Decision Records | 1.0 | 2026-05-28 | ADR conventions change |
