@@ -3,7 +3,6 @@ import {
   getCurrentlyContent,
   getFeaturedWorkContent,
   getHeroContent,
-  getNowPlayingContent,
   getTravelContent,
 } from "../lib/content";
 import CurrentlyPanel from "./components/currently-panel";
@@ -17,7 +16,6 @@ export default function Home() {
   const about = getAboutContent();
   const work = getFeaturedWorkContent();
   const currently = getCurrentlyContent();
-  const nowPlaying = getNowPlayingContent();
   const travel = getTravelContent();
 
   return (
@@ -58,7 +56,7 @@ export default function Home() {
           <CurrentlyPanel content={currently} />
 
           {/* Now Playing */}
-          <NowPlayingPanel content={nowPlaying} />
+          <NowPlayingPanel />
         </div>
 
         {/* ── Travel ───────────────────────────────────────────────── */}

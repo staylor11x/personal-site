@@ -1,23 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { NowPlayingContent } from "../../lib/content";
 import { HudPanel, HudPanelHeader } from "./site-primitives";
-
-type NowPlayingPanelProps = {
-  content?: NowPlayingContent;
-};
 
 type NowPlayingApiResponse = {
   playing: boolean;
   track?: string;
+  title?: string;
   artist?: string;
   album?: string;
   albumArt?: string;
+  albumArtUrl?: string;
   spotifyUrl?: string;
 };
 
-export default function NowPlayingPanel({ content }: NowPlayingPanelProps) {
+function isNowPlayingResponse(value: unknown): value is NowPlayingApiResponse {
+  return typeof value === "object" && value !== null && "playing" in value;
+}
+
+export default function NowPlayingPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<NowPlayingApiResponse | null>(null);
@@ -37,8 +38,7 @@ export default function NowPlayingPanel({ content }: NowPlayingPanelProps) {
         return res.json();
       })
       .then((json: unknown) => {
-        // Basic runtime shape checks
-        if (typeof json === "object" && json !== null && "playing" in (json as any)) {
+        if (isNowPlayingResponse(json)) {
           setData(json as NowPlayingApiResponse);
         } else {
           throw new Error("Unexpected response shape");
@@ -53,18 +53,9 @@ export default function NowPlayingPanel({ content }: NowPlayingPanelProps) {
       .finally(() => setLoading(false));
   }, []);
 
-  const effective =
-    data ??
-    (content
-      ? {
-          playing: true,
-          track: content.track,
-          artist: content.artist,
-          album: content.album,
-          albumArt: content.albumArt,
-          spotifyUrl: content.spotifyUrl,
-        }
-      : null);
+  const effective = data;
+  const trackName = effective?.track ?? effective?.title;
+  const albumArt = effective?.albumArt ?? effective?.albumArtUrl;
 
   return (
     <section id="music" aria-labelledby="music-title" className="scroll-mt-24">
@@ -98,9 +89,9 @@ export default function NowPlayingPanel({ content }: NowPlayingPanelProps) {
                 <div className="flex h-full w-full items-center justify-center">
                   <span className="text-sm text-foreground-muted/60">?</span>
                 </div>
-              ) : effective && effective.playing && effective.albumArt ? (
+              ) : effective && effective.playing && albumArt ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={effective.albumArt} alt="Album art" className="h-full w-full object-cover" />
+                <img src={albumArt} alt="Album art" className="h-full w-full object-cover" />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
                   <span className="text-2xl text-foreground-muted/20">♫</span>
@@ -117,7 +108,7 @@ export default function NowPlayingPanel({ content }: NowPlayingPanelProps) {
               ) : effective ? (
                 effective.playing ? (
                   <>
-                    <p className="truncate text-sm font-medium text-foreground">{effective.track}</p>
+                    <p className="truncate text-sm font-medium text-foreground">{trackName ?? "Unknown track"}</p>
                     <p className="truncate font-mono text-xs text-foreground-muted/70">{effective.artist}</p>
                     {effective.album && (
                       <p className="truncate font-mono text-[10px] text-foreground-muted/40">{effective.album}</p>
