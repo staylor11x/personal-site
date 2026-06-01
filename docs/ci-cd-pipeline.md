@@ -72,3 +72,33 @@ The service account holds `roles/storage.objectAdmin` on `gs://www.scott-taylor1
 ## Deployment step
 
 `google-github-actions/upload-cloud-storage` syncs the contents of `out/` to the bucket root. The bucket is configured with `web-main-page-suffix: index.html` and serves files via the GCS website hosting endpoint, which Cloudflare uses as its origin.
+
+---
+
+## Backend: Deploy workflow
+
+- **Workflow path**: [.github/workflows/deploy-backend.yml](.github/workflows/deploy-backend.yml)
+- **Trigger**: `push` to `main` when changes include files under the `backend/**` path. Pushes that only modify `app/` or frontend files will not trigger this workflow.
+
+Configuration placeholders to replace before enabling the workflow:
+
+- **PROJECT_ID**: Set your GCP project ID.
+- **REGION**: Set the Cloud Run region (for example `us-central1`).
+- **ARTIFACT_REGISTRY**: Full Artifact Registry repository host and path, e.g. `us-central1-docker.pkg.dev/PROJECT_ID/personal-site-backend`.
+
+Auth and WIF resources:
+
+- This workflow reuses the existing Workload Identity Federation pool and provider named `github-actions-pool` and `github-provider`.
+- The workflow authenticates with `google-github-actions/auth` and impersonates the `github-actions-deploy` service account. It does NOT create new WIF pools/providers or new secrets.
+
+Manual IAM steps required (one-time):
+
+1. Ensure the service account `github-actions-deploy@<PROJECT_ID>.iam.gserviceaccount.com` exists in your GCP project.
+2. Grant the following IAM roles to that service account (minimal permissions for this flow):
+   - `roles/artifactregistry.writer` on the Artifact Registry repository (or project-scoped if appropriate)
+   - `roles/run.developer` on the project (or narrower scope as desired)
+
+Notes:
+
+- The workflow tags images with the short Git commit SHA (7 chars) and pushes them to the configured Artifact Registry repository.
+- Replace the `PROJECT_NUMBER` placeholder in the workflow's `workload_identity_provider` value if your setup requires the numeric project identifier.

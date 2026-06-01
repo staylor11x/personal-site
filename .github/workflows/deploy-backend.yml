@@ -1,0 +1,71 @@
+# Deploy backend to Cloud Run using Workload Identity Federation (WIF)
+# Required IAM roles to grant to github-actions-deploy service account:
+#  - roles/artifactregistry.writer
+#  - roles/run.developer
+
+name: Deploy Backend
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+env:
+  PROJECT_ID: 'personal-site-497615'
+  REGION: 'europe-west2'
+  ARTIFACT_REGISTRY: 'europe-west2-docker.pkg.dev/personal-site-497615/backend'
+  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+
+      - name: Authenticate to Google Cloud (Workload Identity Federation)
+        uses: google-github-actions/auth@v3
+        with:
+          # Reuse existing WIF pool and provider named 'github-actions-pool' / 'github-provider'.
+          # Replace PROJECT_NUMBER with your GCP project number if needed.
+          workload_identity_provider: 'projects/78372225567/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider'
+          # The service account to impersonate. Replace PROJECT_ID below.
+          service_account: 'github-actions-deploy@personal-site-497615.iam.gserviceaccount.com'
+
+      - name: Set up gcloud SDK
+        uses: google-github-actions/setup-gcloud@v3.0.1
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker europe-west2-docker.pkg.dev --quiet
+
+      - name: Build and push Docker image to Artifact Registry
+        working-directory: backend
+        env:
+          # GITHUB_SHA is provided by Actions runner
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          IMAGE="$ARTIFACT_REGISTRY:${GITHUB_SHA::7}"
+          echo "Building image $IMAGE"
+          docker build -t "$IMAGE" .
+          echo "Pushing image $IMAGE"
+          docker push "$IMAGE"
+          echo "Image pushed: $IMAGE"
+
+      - name: Deploy to Cloud Run
+        run: |
+          IMAGE="$ARTIFACT_REGISTRY:${GITHUB_SHA::7}"
+          echo "Deploying $IMAGE to Cloud Run service personal-site-backend in region $REGION"
+          gcloud run deploy personal-site-backend --image="$IMAGE" --region="$REGION" --platform=managed --allow-unauthenticated --project="$PROJECT_ID"
+
+      - name: Post-deploy note
+        run: |
+          echo "NOTE: Ensure the service account github-actions-deploy@${PROJECT_ID}.iam.gserviceaccount.com has the roles/artifactregistry.writer and roles/run.developer roles."
