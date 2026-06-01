@@ -55,7 +55,7 @@ docker run --rm -p 8080:8080 \
 
 curl -i http://localhost:8080/api/now-playing
 # Expected when a track is playing: HTTP 200, {"playing":true,"title":"...","artist":"...","album":"...","albumArtUrl":"..."}
-# Expected when nothing is playing: HTTP 204, {"playing":false}
+# Expected when nothing is playing: HTTP 200, {"playing":false}
 ```
 
 See [backend/SETUP.md](backend/SETUP.md) for GCP project setup, Secret Manager provisioning, and Spotify OAuth steps.

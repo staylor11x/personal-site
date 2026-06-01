@@ -183,8 +183,7 @@ export default function NowPlayingPanel() {
           )}
 
           {/* Fallback note */}
-          <p className="mt-3 text-center font-mono text-[10px] text-foreground-muted/30">SPOTIFY INTEGRATION — PHASE 5</p>
-        </div>
+          <p className="mt-3 text-center font-mono text-[10px] text-foreground-muted/30">SPOTIFY INTEGRATION —         </div>
       </HudPanel>
     </section>
   );

@@ -331,6 +331,6 @@ Until that change is needed, no action is required.
 curl https://api.scott-taylor11.com/health
 
 # Now playing — expects HTTP 200 with track JSON (Spotify must be active)
-# or HTTP 204 No Content when nothing is playing
+# or HTTP 200 with {"playing":false} when nothing is playing
 curl https://api.scott-taylor11.com/api/now-playing
 ```
