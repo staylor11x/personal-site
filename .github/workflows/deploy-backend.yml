@@ -18,7 +18,7 @@ permissions:
 env:
   PROJECT_ID: 'personal-site-497615'
   REGION: 'europe-west2'
-  ARTIFACT_REGISTRY: 'europe-west2-docker.pkg.dev/personal-site-497615/backend'
+  ARTIFACT_REGISTRY: 'europe-west2-docker.pkg.dev/personal-site-497615/backend/personal-site-backend'
   
 
 jobs:
