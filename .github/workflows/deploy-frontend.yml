@@ -37,6 +37,8 @@ jobs:
         run: npm ci
 
       - name: Build static export
+        env:
+          NEXT_PUBLIC_API_URL: https://api.scott-taylor11.com
         run: npm run build
 
       - name: Authenticate to GCP
