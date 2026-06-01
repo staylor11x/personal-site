@@ -15,6 +15,7 @@ on:
       - 'postcss.config.mjs'
       - 'tsconfig.json'
       - '.github/workflows/deploy-frontend.yml'
+      - 'trigger-build.md'
 
 jobs:
   deploy:
