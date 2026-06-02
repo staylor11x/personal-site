@@ -32,15 +32,21 @@ function reducer(state: State, action: Action): State {
     case "SUBMIT": {
       const cmd = state.input.trim();
       if (!cmd) return { ...state, input: "" };
+      if (cmd === "clear") {
+        const next: Line[] = [];
+        return { history: next, input: "" };
+      }
+
       const inputLine: Line = { kind: "input", text: `${PROMPT} ${cmd}` };
       const outputLine: Line = {
         kind: "output",
-        text: cmd === "help"
-          ? "Available commands: help, clear — more coming soon"
-          : `command not found: ${cmd}`,
+        text:
+          cmd === "help"
+            ? "Available commands: help, clear — more coming soon"
+            : `command not found: ${cmd}`,
       };
+
       let next = [...state.history, inputLine, outputLine];
-      if (cmd === "clear") next = [];
       if (next.length > MAX_HISTORY) next = next.slice(next.length - MAX_HISTORY);
       return { history: next, input: "" };
     }
@@ -102,7 +108,7 @@ export default function TerminalPanel() {
               );
             }
             return (
-              <p key={i} className="text-text-muted">
+              <p key={i} className="text-foreground-muted">
                 {line.text}
               </p>
             );
@@ -129,7 +135,7 @@ export default function TerminalPanel() {
               onKeyDown={(e) => {
                 if (e.key === "Enter") dispatch({ type: "SUBMIT" });
               }}
-              className="w-full bg-transparent text-text-primary caret-transparent outline-none"
+              className="w-full bg-transparent text-foreground caret-transparent outline-none"
             />
             {/* Blinking cursor — hidden when input has content; respects reduced-motion */}
             <span
