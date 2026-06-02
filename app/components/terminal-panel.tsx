@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useReducer } from "react";
 import { HudPanel, HudPanelHeader } from "./site-primitives";
+import { COMMANDS } from "../../lib/terminal/registry";
 
 const PROMPT = "visitor@staylor ~$";
 const MAX_HISTORY = 50;
@@ -30,23 +31,23 @@ function reducer(state: State, action: Action): State {
     case "SET_INPUT":
       return { ...state, input: action.value };
     case "SUBMIT": {
-      const cmd = state.input.trim();
-      if (!cmd) return { ...state, input: "" };
-      if (cmd === "clear") {
-        const next: Line[] = [];
-        return { history: next, input: "" };
+      const raw = state.input.trim();
+      if (!raw) return { ...state, input: "" };
+      if (raw === "clear") return { history: [], input: "" };
+
+      const [cmd, ...args] = raw.split(/\s+/);
+      const inputLine: Line = { kind: "input", text: `${PROMPT} ${raw}` };
+
+      let outputLines: Line[];
+      if (COMMANDS[cmd]) {
+        const result = COMMANDS[cmd].handler(args);
+        const lines = Array.isArray(result) ? result : [result];
+        outputLines = lines.map((text) => ({ kind: "output" as const, text }));
+      } else {
+        outputLines = [{ kind: "output", text: `command not found: ${cmd}` }];
       }
 
-      const inputLine: Line = { kind: "input", text: `${PROMPT} ${cmd}` };
-      const outputLine: Line = {
-        kind: "output",
-        text:
-          cmd === "help"
-            ? "Available commands: help, clear — more coming soon"
-            : `command not found: ${cmd}`,
-      };
-
-      let next = [...state.history, inputLine, outputLine];
+      let next = [...state.history, inputLine, ...outputLines];
       if (next.length > MAX_HISTORY) next = next.slice(next.length - MAX_HISTORY);
       return { history: next, input: "" };
     }

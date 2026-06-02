@@ -37,13 +37,28 @@ Determine which phase the issue belongs to and whether it has blocking dependenc
 
 ### Step 3 — Decide whether implementation is required
 
-If the issue requires file changes, delegate execution to the `Implementer` agent.
+If the issue requires file changes:
+
+#### Step 3.1 — Create the branch via GitOps
+
+Call the GitOps subagent to create and push the branch before any implementation work begins. Derive the branch name from the issue type and title:
+
+- `feature/<slug>` for new functionality
+- `fix/<slug>` for bug fixes
+- `chore/<slug>` for tooling, config, or housekeeping
+- `docs/<slug>` for documentation-only changes
+
+Pass the issue number and the derived branch name. GitOps pushes the empty branch from main.
+
+#### Step 3.2 — Delegate to Implementer
+
+Delegate execution to the `Implementer` agent on the newly created branch.
 
 Pass the issue context, the current phase expectations, and this instruction explicitly:
 
-> "Do not commit, push, or create a PR. Implement the smallest correct change set, validate it, and return the files changed plus a short summary."
+> "Do not commit, push, or create a PR. Implement the smallest correct change set on the existing branch, validate it, and return the files changed plus a short summary."
 
-If the issue is only planning, issue triage, dependency clarification, or git workflow handling, perform that orchestration directly without calling Implementer.
+If the issue is only planning, issue triage, dependency clarification, or git workflow handling, perform that orchestration directly without calling Implementer or GitOps for a branch.
 
 ### Step 4 — Review the implementation result
 
@@ -67,15 +82,27 @@ Stop and escalate if:
 
 If escalation is necessary, summarize the blocker clearly for the user or post it back to the issue using repository-integrated GitHub tooling.
 
+### Step 5.5 — Check whether documentation needs updating
+
+Before opening a PR, determine whether the implementation changes any behaviour, architecture, or content that is documented in `docs/`.
+
+If documentation is out of date or a new decision was made during implementation:
+
+- Call the `Documentation` agent with a concise description of what changed and which documents are likely affected.
+- Wait for Documentation to return the list of modified files.
+- Add those files to the GitOps changeset in Step 6.
+
+If no documentation is affected, proceed directly to Step 6.
+
 ### Step 6 — Call GitOps
 
 Once implementation is complete and git operations are requested, call the GitOps subagent with:
 
-- the combined list of changed files
+- the combined list of changed files (implementation + any documentation updates)
 - the issue number
 - a one-sentence summary of what changed
 
-GitOps creates the branch, commits everything, pushes, and opens a single PR.
+GitOps commits everything to the existing branch, pushes, and opens a single PR.
 
 ---
 
@@ -84,6 +111,8 @@ GitOps creates the branch, commits everything, pushes, and opens a single PR.
 - DO NOT skip the roadmap and phase checks
 - DO NOT drag Phase 2 or Phase 3 features into a Phase 1 issue unless explicitly requested
 - DO NOT bypass the Implementer for normal code or documentation work
-- DO NOT call GitOps until implementation is complete and validated
+- DO NOT let the Implementer start work before GitOps has created the branch
+- DO NOT call GitOps for commit and PR until implementation is complete and validated
 - DO NOT call GitOps if an escalation condition exists
+- DO NOT skip the documentation check (Step 5.5) before raising a PR
 - One PR per issue unless the user explicitly asks for a different split
