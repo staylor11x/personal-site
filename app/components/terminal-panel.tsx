@@ -183,7 +183,7 @@ export default function TerminalPanel({ content }: Props) {
                   dispatch({ type: "HISTORY_DOWN" });
                 }
               }}
-              className="w-full bg-transparent text-foreground caret-transparent outline-none border-none ring-0 focus:ring-0 focus:outline-none"
+              className="terminal-input w-full bg-transparent text-foreground caret-transparent outline-none border-none ring-0 focus:ring-0 focus:outline-none focus-visible:shadow-none"
             />
             {/* Blinking cursor — hidden when input has content; respects reduced-motion */}
             <span
