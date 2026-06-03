@@ -7,23 +7,19 @@ export type CommandSpec = {
   handler: CommandHandler;
 };
 
-const STATIC_COMMANDS: Record<string, CommandSpec> = {
-  help: {
-    desc: "List available commands",
-    handler: (_args) =>
-      Object.entries(STATIC_COMMANDS).map(([name, spec]) => `  ${name.padEnd(12)} ${spec.desc}`),
-  },
-  about: {
-    desc: "Learn more about this site",
-    handler: (_args) => "Scott Taylor — software engineer. Built with Next.js + TypeScript.",
-  },
-};
-
 export function buildCommands(
   content: Partial<TerminalContent>
 ): Record<string, CommandSpec> {
-  return {
-    ...STATIC_COMMANDS,
+  const commands: Record<string, CommandSpec> = {
+    help: {
+      desc: "List available commands",
+      handler: (_args) =>
+        Object.entries(commands).map(([name, spec]) => `  ${name}: ${spec.desc}`),
+    },
+    about: {
+      desc: "Learn more about this site",
+      handler: (_args) => "Scott Taylor — software engineer. Built with Next.js + TypeScript.",
+    },
     now: {
       desc: "What I'm currently up to",
       handler: (_args) => content.now ?? ["no content loaded"],
@@ -37,11 +33,12 @@ export function buildCommands(
       handler: (_args) => content.whoami ?? ["no content loaded"],
     },
     contact: {
-        desc: "How to get in touch",
-        handler: (_args) => content.contact ?? ["no content loaded"],
+      desc: "How to get in touch",
+      handler: (_args) => content.contact ?? ["no content loaded"],
     },
   };
+  return commands;
 }
 
 /** Backward-compatible static export (no dynamic content). */
-export const COMMANDS: Record<string, CommandSpec> = STATIC_COMMANDS;
+export const COMMANDS: Record<string, CommandSpec> = buildCommands({});
