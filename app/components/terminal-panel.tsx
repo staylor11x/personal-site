@@ -58,7 +58,7 @@ function reducer(state: State, action: Action): State {
         const lines = Array.isArray(result) ? result : [result];
         outputLines = lines.map((text) => ({ kind: "output" as const, text }));
       } else {
-        outputLines = [{ kind: "output", text: `command not found: ${cmd}` }];
+        outputLines = [{ kind: "output", text: `command not found, sorry :/ ${cmd}` }];
       }
 
       let next = [...state.history, inputLine, ...outputLines];
@@ -156,7 +156,7 @@ export default function TerminalPanel({ content }: Props) {
         </div>
 
         {/* Prompt row */}
-        <div className="flex items-center gap-2 border-t border-border-subtle px-4 py-2 font-mono text-xs bg-[#0d0d0d]">
+        <div className="flex items-center gap-2 px-4 py-2 font-mono text-xs bg-[#0d0d0d]">
           <span className="shrink-0 select-none text-accent-green" aria-hidden="true">
             {PROMPT}
           </span>
