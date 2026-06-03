@@ -3,7 +3,7 @@ eyebrow: About
 heading: A bit about me
 contact:
   label: Get in touch
-  href: "mailto:hello@example.com"
+  href: "mailto:scott2023taylor@outlook.com"
 ---
 
 I'm a not frontend engineer with a focus on building clean, accessible digital experiences. I care about the craft of UI — from the precision of a pixel to the logic of a component architecture.

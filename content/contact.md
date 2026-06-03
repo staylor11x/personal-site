@@ -1,8 +1,8 @@
 ---
-tagline: Let's build something together.
+tagline: Please don't spam me.
 links:
   - label: Email
-    href: "mailto:scott2023taylor@outlook.com"
+    href: "scott2023taylor@outlook.com"
   - label: GitHub
     href: "https://github.com/staylor11x"
   - label: LinkedIn

@@ -17,10 +17,6 @@ const STATIC_COMMANDS: Record<string, CommandSpec> = {
     desc: "Learn more about this site",
     handler: (_args) => "Scott Taylor — software engineer. Built with Next.js + TypeScript.",
   },
-  contact: {
-    desc: "Show contact information",
-    handler: (_args) => "GitHub: github.com/staylor11x",
-  },
 };
 
 export function buildCommands(
@@ -39,6 +35,10 @@ export function buildCommands(
     whoami: {
       desc: "A bit about me",
       handler: (_args) => content.whoami ?? ["no content loaded"],
+    },
+    contact: {
+        desc: "How to get in touch",
+        handler: (_args) => content.contact ?? ["no content loaded"],
     },
   };
 }
