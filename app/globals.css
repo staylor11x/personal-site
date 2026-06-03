@@ -197,6 +197,12 @@ samp,
   animation: blink 1s step-end infinite;
 }
 
+.terminal-input:focus,
+.terminal-input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
     scroll-behavior: auto;

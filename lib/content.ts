@@ -66,6 +66,7 @@ export type AboutContent = {
 export function getAboutContent(): AboutContent {
   const { data, content } = readContent("about.md");
   const paragraphs = content
+    .replace(/\r\n/g, "\n")
     .split(/\n\n+/)
     .map((p) => p.trim())
     .filter(Boolean);
@@ -182,6 +183,8 @@ export type ContactContent = {
   links: ContactLink[];
 };
 
+// ── Contact ────────────────────────────────────────────────────────────────────
+
 export function getContactContent(): ContactContent {
   const { data } = readContent("contact.md");
   const d: any = data ?? {};
@@ -206,6 +209,7 @@ export type TerminalContent = {
   now: string[];
   travel: string[];
   whoami: string[];
+  contact: string[];
 };
 
 /** Returns pre-formatted plain-text lines for terminal commands. No HTML. */
@@ -213,6 +217,7 @@ export function getTerminalContent(): TerminalContent {
   const currently = getCurrentlyContent();
   const travelData = getTravelContent();
   const about = getAboutContent();
+  const contactData = getContactContent();
 
   const now: string[] = [
     "── CURRENTLY ─────────────────────",
@@ -240,5 +245,12 @@ export function getTerminalContent(): TerminalContent {
     ...about.paragraphs.slice(0, 2),
   ];
 
-  return { now, travel, whoami };
+  const contact: string[] = [
+      `── Contact ────────────────────────`,
+      `${contactData.tagline}`,
+      "",
+      ...contactData.links.map((j) => `  ${j.label} ${j.href}`),
+  ];
+
+  return { now, travel, whoami, contact };
 }

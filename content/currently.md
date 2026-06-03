@@ -1,13 +1,14 @@
 ---
 learning:
-  - CKAD Certification
-  - Kubernetes Networking
-  - C++ Audio DSP
+  - GCP (Where this site is hosted!)
+  - AWS (Solutions Architect)
+  - Kube + ArgoCD (see my personal-cloud project on GitHub!)
 listening:
-  - Perturbator
-  - Carpenter Brut
-  - Gunship
+  - Nickelback
+  - Nickelback
+  - More Nickelback
 building:
   - This site
-  - Something cool
+  - A personal cloud
+  - Something else the world does not need
 ---
