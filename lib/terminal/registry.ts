@@ -11,7 +11,7 @@ const STATIC_COMMANDS: Record<string, CommandSpec> = {
   help: {
     desc: "List available commands",
     handler: (_args) =>
-      Object.entries(buildCommands({})).map(([name, spec]) => `  ${name.padEnd(12)} ${spec.desc}`),
+      Object.entries(STATIC_COMMANDS).map(([name, spec]) => `  ${name.padEnd(12)} ${spec.desc}`),
   },
   about: {
     desc: "Learn more about this site",

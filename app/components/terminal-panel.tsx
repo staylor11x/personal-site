@@ -63,8 +63,6 @@ type Props = {
 
 export default function TerminalPanel({ content }: Props) {
   const commands = useMemo(() => buildCommands(content), [content]);
-  const commandsRef = useRef(commands);
-  commandsRef.current = commands;
 
   const [state, dispatch] = useReducer(reducer, {
     history: WELCOME,
@@ -143,7 +141,7 @@ export default function TerminalPanel({ content }: Props) {
               onChange={(e) => dispatch({ type: "SET_INPUT", value: e.target.value })}
               onKeyDown={(e) => {
                 if (e.key === "Enter")
-                  dispatch({ type: "SUBMIT", commands: commandsRef.current });
+                  dispatch({ type: "SUBMIT", commands });
               }}
               className="w-full bg-transparent text-foreground caret-transparent outline-none"
             />
