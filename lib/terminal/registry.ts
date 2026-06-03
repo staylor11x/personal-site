@@ -18,7 +18,7 @@ export function buildCommands(
     },
     about: {
       desc: "Learn more about this site",
-      handler: (_args) => "Scott Taylor & software engineer & vibe coder",
+      handler: (_args) => "Front End: Next.js <--> Backend: C++ <--> Hosted: GCP",
     },
     now: {
       desc: "What I'm currently up to",
@@ -35,6 +35,10 @@ export function buildCommands(
     contact: {
       desc: "How to get in touch",
       handler: (_args) => content.contact ?? ["no content loaded"],
+    },
+    matrixrain: {
+      desc: "Watch the Matrix rain",
+      handler: (_args) => ["Initializing Matrix rain..."],
     },
   };
   return commands;

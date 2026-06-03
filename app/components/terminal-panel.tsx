@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useReducer, useMemo, useCallback } from "react";
+import { useEffect, useRef, useReducer, useMemo, useCallback, useState } from "react";
 import { HudPanel, HudPanelHeader } from "./site-primitives";
 import { buildCommands, CommandSpec } from "../../lib/terminal/registry";
 import type { TerminalContent } from "../../lib/content";
@@ -17,9 +17,7 @@ type Line =
 type State = {
   history: Line[];
   input: string;
-  /** Submitted command strings for up/down navigation */
   cmdHistory: string[];
-  /** Current position in cmdHistory; -1 = not navigating */
   cmdHistoryIndex: number;
 };
 
@@ -87,6 +85,96 @@ type Props = {
   content: TerminalContent;
 };
 
+function MatrixRainCanvas({ onFinish }: { onFinish: () => void }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      onFinish();
+      return;
+    }
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    const resize = () => {
+      canvas.width = parent.clientWidth;
+      canvas.height = parent.clientHeight;
+    };
+    resize();
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      onFinish();
+      return;
+    }
+
+    const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops: number[] = Array.from({ length: columns }, () =>
+      Math.floor(Math.random() * -(canvas.height / fontSize))
+    );
+
+    let animationId: number;
+    let running = true;
+
+    function draw() {
+      if (!running) return;
+      ctx!.fillStyle = "rgba(13, 13, 13, 0.08)";
+      ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
+
+      ctx!.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        ctx!.fillStyle = "#39ff14";
+        ctx!.fillText(char, x, y);
+
+        if (y > canvas!.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      animationId = requestAnimationFrame(draw);
+    }
+
+    animationId = requestAnimationFrame(draw);
+
+    const timer = setTimeout(() => {
+      running = false;
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      onFinish();
+    }, 10000);
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(parent);
+
+    return () => {
+      running = false;
+      cancelAnimationFrame(animationId);
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [onFinish]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 z-10 h-full w-full"
+      aria-hidden="true"
+    />
+  );
+}
+
 export default function TerminalPanel({ content }: Props) {
   const commands = useMemo(() => buildCommands(content), [content]);
 
@@ -97,6 +185,8 @@ export default function TerminalPanel({ content }: Props) {
     cmdHistoryIndex: -1,
   });
 
+  const [matrixRainActive, setMatrixRainActive] = useState(false);
+
   const outputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -105,12 +195,27 @@ export default function TerminalPanel({ content }: Props) {
     if (el) el.scrollTop = el.scrollHeight;
   }, [state.history]);
 
+  const lastRainInputRef = useRef(-1);
+
+  useEffect(() => {
+    if (matrixRainActive) return;
+    for (let i = state.history.length - 1; i >= 0; i--) {
+      const line = state.history[i];
+      if (line.kind === "input") {
+        const cmd = line.text.slice(PROMPT.length + 1).trim().split(/\s+/)[0];
+        if (cmd === "matrixrain" && lastRainInputRef.current !== i) {
+          lastRainInputRef.current = i;
+          setMatrixRainActive(true);
+        }
+        break;
+      }
+    }
+  }, [state.history, matrixRainActive]);
+
   function handleFocus() {
     inputRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  // Only focus the input when clicking if there's no active text selection,
-  // so users can freely copy terminal output.
   const handleClick = useCallback(() => {
     const selection = window.getSelection();
     if (!selection || selection.toString().length === 0) {
@@ -123,14 +228,13 @@ export default function TerminalPanel({ content }: Props) {
       <HudPanel accentColor="green">
         <HudPanelHeader label="// NODE.005 — TERMINAL" accentColor="green" />
 
-        {/* Output area — explicit dark background so it reads as a real terminal */}
         <div
           ref={outputRef}
           role="log"
           aria-live="polite"
           aria-label="Terminal output"
           onClick={handleClick}
-          className="h-[300px] overflow-y-auto cursor-text px-4 py-3 font-mono text-xs leading-relaxed sm:h-[400px] bg-[#0d0d0d] rounded-sm"
+          className="relative h-[300px] overflow-y-auto cursor-text px-4 py-3 font-mono text-xs leading-relaxed sm:h-[400px] bg-[#0d0d0d] rounded-sm"
         >
           {state.history.map((line, i) => {
             if (line.kind === "banner") {
@@ -153,9 +257,11 @@ export default function TerminalPanel({ content }: Props) {
               </p>
             );
           })}
+          {matrixRainActive && (
+            <MatrixRainCanvas onFinish={() => setMatrixRainActive(false)} />
+          )}
         </div>
 
-        {/* Prompt row */}
         <div className="flex items-center gap-2 px-4 py-2 font-mono text-xs bg-[#0d0d0d]">
           <span className="shrink-0 select-none text-accent-green" aria-hidden="true">
             {PROMPT}
@@ -185,7 +291,6 @@ export default function TerminalPanel({ content }: Props) {
               }}
               className="terminal-input w-full bg-transparent text-foreground caret-transparent outline-none border-none ring-0 focus:ring-0 focus:outline-none focus-visible:shadow-none"
             />
-            {/* Blinking cursor — hidden when input has content; respects reduced-motion */}
             <span
               aria-hidden="true"
               className="cursor-blink pointer-events-none absolute top-0 font-mono text-xs text-accent-green"
