@@ -199,3 +199,46 @@ export function getContactContent(): ContactContent {
   assertShape(missing.length === 0, `Invalid contact.md frontmatter — missing/invalid: ${missing.join(", ")}`);
   return d as ContactContent;
 }
+
+// ── Terminal ──────────────────────────────────────────────────────────────────
+
+export type TerminalContent = {
+  now: string[];
+  travel: string[];
+  whoami: string[];
+};
+
+/** Returns pre-formatted plain-text lines for terminal commands. No HTML. */
+export function getTerminalContent(): TerminalContent {
+  const currently = getCurrentlyContent();
+  const travelData = getTravelContent();
+  const about = getAboutContent();
+
+  const now: string[] = [
+    "── CURRENTLY ─────────────────────",
+    ...(currently.learning.length
+      ? ["learning:", ...currently.learning.map((x) => `  · ${x}`)]
+      : []),
+    ...(currently.listening.length
+      ? ["listening:", ...currently.listening.map((x) => `  · ${x}`)]
+      : []),
+    ...(currently.building.length
+      ? ["building:", ...currently.building.map((x) => `  · ${x}`)]
+      : []),
+  ];
+
+  const travel: string[] = [
+    `── TRAVEL ────────────────────────`,
+    `countries visited: ${travelData.countriesVisited}`,
+    "",
+    "recent journeys:",
+    ...travelData.journeys.map((j) => `  ${j.year}  ${j.destination}`),
+  ];
+
+  const whoami: string[] = [
+    "── WHOAMI ────────────────────────",
+    ...about.paragraphs.slice(0, 2),
+  ];
+
+  return { now, travel, whoami };
+}

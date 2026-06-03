@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useReducer } from "react";
+import { useEffect, useRef, useReducer, useMemo } from "react";
 import { HudPanel, HudPanelHeader } from "./site-primitives";
-import { COMMANDS } from "../../lib/terminal/registry";
+import { buildCommands, CommandSpec } from "../../lib/terminal/registry";
+import type { TerminalContent } from "../../lib/content";
 
 const PROMPT = "visitor@staylor ~$";
 const MAX_HISTORY = 50;
@@ -19,7 +20,7 @@ type State = {
 
 type Action =
   | { type: "SET_INPUT"; value: string }
-  | { type: "SUBMIT" };
+  | { type: "SUBMIT"; commands: Record<string, CommandSpec> };
 
 const WELCOME: Line[] = [
   { kind: "banner", text: "SCOTT TAYLOR — engineering thoughtful systems" },
@@ -32,15 +33,15 @@ function reducer(state: State, action: Action): State {
       return { ...state, input: action.value };
     case "SUBMIT": {
       const raw = state.input.trim();
-      if (!raw) return { ...state, input: "" };
+      if (raw.length === 0) return { ...state, input: "" };
       if (raw === "clear") return { history: [], input: "" };
 
       const [cmd, ...args] = raw.split(/\s+/);
       const inputLine: Line = { kind: "input", text: `${PROMPT} ${raw}` };
 
       let outputLines: Line[];
-      if (COMMANDS[cmd]) {
-        const result = COMMANDS[cmd].handler(args);
+      if (action.commands[cmd]) {
+        const result = action.commands[cmd].handler(args);
         const lines = Array.isArray(result) ? result : [result];
         outputLines = lines.map((text) => ({ kind: "output" as const, text }));
       } else {
@@ -56,7 +57,15 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-export default function TerminalPanel() {
+type Props = {
+  content: TerminalContent;
+};
+
+export default function TerminalPanel({ content }: Props) {
+  const commands = useMemo(() => buildCommands(content), [content]);
+  const commandsRef = useRef(commands);
+  commandsRef.current = commands;
+
   const [state, dispatch] = useReducer(reducer, {
     history: WELCOME,
     input: "",
@@ -65,7 +74,6 @@ export default function TerminalPanel() {
   const outputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-scroll to bottom whenever history changes
   useEffect(() => {
     const el = outputRef.current;
     if (el) el.scrollTop = el.scrollHeight;
@@ -134,7 +142,8 @@ export default function TerminalPanel() {
               onFocus={handleFocus}
               onChange={(e) => dispatch({ type: "SET_INPUT", value: e.target.value })}
               onKeyDown={(e) => {
-                if (e.key === "Enter") dispatch({ type: "SUBMIT" });
+                if (e.key === "Enter")
+                  dispatch({ type: "SUBMIT", commands: commandsRef.current });
               }}
               className="w-full bg-transparent text-foreground caret-transparent outline-none"
             />
