@@ -78,12 +78,12 @@ type RootLayoutProps = {
 };
 
 const primaryNavItems = [
-  { href: "#hero", label: "HOME", num: "01" },
-  { href: "#about", label: "ABOUT", num: "02" },
-  { href: "#now", label: "NOW", num: "03" },
-  { href: "#travel", label: "TRAVEL", num: "04" },
-  { href: "#music", label: "MUSIC", num: "05" },
-  { href: "#terminal", label: "TERMINAL", num: "06" },
+  { href: "/#hero", label: "HOME", num: "01" },
+  { href: "/#about", label: "ABOUT", num: "02" },
+  { href: "/#now", label: "NOW", num: "03" },
+  { href: "/#travel", label: "TRAVEL", num: "04" },
+  { href: "/#music", label: "MUSIC", num: "05" },
+  { href: "/#terminal", label: "TERMINAL", num: "06" },
 ] as const;
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -115,7 +115,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <SiteContainer>
                 <div className="flex items-center justify-between gap-4 py-3">
                   {/* Branding */}
-                  <a href="#hero" className="flex items-baseline gap-2 whitespace-nowrap">
+                  <a href="/#hero" className="flex items-baseline gap-2 whitespace-nowrap">
                     <span
                       className="text-sm font-bold tracking-widest text-accent-magenta"
                       style={{ fontFamily: "var(--font-heading)" }}
@@ -149,10 +149,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   <ul className="hidden items-center gap-2 lg:flex">
                     {contact.links.map((link) => (
                       <li key={link.href}>
-                        <a
-                          href={link.href}
-                          target={link.href.startsWith("http") ? "_blank" : undefined}
-                          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                          <a
+                            href={link.href.includes("@") && !link.href.includes("://") ? `mailto:${link.href}` : link.href}
+                            target={link.href.startsWith("http") ? "_blank" : undefined}
+                            rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                           className="technical-label text-xs text-foreground-muted/50 transition-colors hover:text-accent-cyan"
                         >
                           {link.label}

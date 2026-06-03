@@ -3,10 +3,12 @@ eyebrow: Featured work
 heading: Things I've built
 items:
   - title: Personal site
-    description: This site — a retro-futuristic personal OS built with Next.js, TypeScript, and Tailwind CSS. Content-driven, accessible, and fast.
+    description: This site — a retro-futuristic personal OS built with Next.js, TypeScript, Tailwind CSS and a C++ backend. Why, cause it's cool.
     href: "https://github.com/staylor11x/personal-site"
-  - title: Work in progress
-    description: A project currently in development. Details to follow once it's ready to share.
-  - title: Coming soon
-    description: More representative work will appear here as the site evolves. Check back or reach out to ask.
+  - title: Spider Solitaire 
+    description: A Spider Solitaire desktop app, built with Go + Ebiten. 
+    href: "https://github.com/staylor11x/spider-solitaire"
+  - title: Personal Cloud (Coming soon)
+    description: A personal cloud system using k3s, ArgoCD and loads of other cool tech. 
+    href: "https://github.com/staylor11x/personal-cloud"
 ---

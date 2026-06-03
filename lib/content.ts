@@ -66,6 +66,7 @@ export type AboutContent = {
 export function getAboutContent(): AboutContent {
   const { data, content } = readContent("about.md");
   const paragraphs = content
+    .replace(/\r\n/g, "\n")
     .split(/\n\n+/)
     .map((p) => p.trim())
     .filter(Boolean);

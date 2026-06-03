@@ -18,7 +18,7 @@ export function buildCommands(
     },
     about: {
       desc: "Learn more about this site",
-      handler: (_args) => "Scott Taylor — software engineer. Built with Next.js + TypeScript.",
+      handler: (_args) => "Scott Taylor & software engineer & vibe coder",
     },
     now: {
       desc: "What I'm currently up to",

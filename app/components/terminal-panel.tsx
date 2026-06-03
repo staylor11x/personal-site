@@ -58,7 +58,7 @@ function reducer(state: State, action: Action): State {
         const lines = Array.isArray(result) ? result : [result];
         outputLines = lines.map((text) => ({ kind: "output" as const, text }));
       } else {
-        outputLines = [{ kind: "output", text: `command not found, sorry :/ ${cmd}` }];
+        outputLines = [{ kind: "output", text: `command not found, sorry :/ ` }];
       }
 
       let next = [...state.history, inputLine, ...outputLines];
