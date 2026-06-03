@@ -2,8 +2,8 @@
 name: Implementer
 description: "Use when implementing code, content, documentation, or repository changes for the personal-site project. Handles issue-scoped execution, validation, and file changes, but does not commit, push, or open PRs. Prefer this agent for any real implementation work after the roadmap and issue context are understood."
 argument-hint: "Provide the GitHub issue number plus any short execution note if needed. E.g., 'Issue #4' or '#4 scaffold the app baseline'."
-tools: [execute, read, search, todo, agent, 'github/*']
-model: [GPT-5.4 (copilot)]
+tools: [execute, read, agent, edit, search, 'github/*', todo]
+model: [Claude Sonnet 4.6 (copilot)]
 ---
 
 # Implementer Agent

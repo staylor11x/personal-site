@@ -3,12 +3,14 @@ import {
   getCurrentlyContent,
   getFeaturedWorkContent,
   getHeroContent,
+  getTerminalContent,
   getTravelContent,
 } from "../lib/content";
 import CurrentlyPanel from "./components/currently-panel";
 import HeroPanel from "./components/hero-panel";
 import NowPlayingPanel from "./components/now-playing-panel";
 import { HudPanel, HudPanelHeader, SiteContainer } from "./components/site-primitives";
+import TerminalPanel from "./components/terminal-panel";
 import TravelPanel from "./components/travel-panel";
 
 export default function Home() {
@@ -17,6 +19,7 @@ export default function Home() {
   const work = getFeaturedWorkContent();
   const currently = getCurrentlyContent();
   const travel = getTravelContent();
+  const terminal = getTerminalContent();
 
   return (
     <SiteContainer className="py-4">
@@ -62,42 +65,8 @@ export default function Home() {
         {/* ── Travel ───────────────────────────────────────────────── */}
         <TravelPanel content={travel} />
 
-        {/* ── Terminal scaffold ────────────────────────────────────── */}
-        <section id="terminal" aria-labelledby="terminal-title" className="scroll-mt-24">
-          <HudPanel>
-            <HudPanelHeader
-              label="// TERMINAL.NODE"
-              right={
-                <span className="flex items-center gap-1.5">
-                  <span className="inline-block h-1.5 w-1.5 bg-foreground-muted/30" />
-                  PHASE 3
-                </span>
-              }
-            />
-            <div className="p-5" data-ui="technical">
-              <div className="border border-border-subtle bg-[#020510]">
-                <div className="flex items-center gap-2 border-b border-border-subtle px-4 py-2.5">
-                  <span className="h-2 w-2 bg-accent-magenta/60" aria-hidden="true" />
-                  <span className="h-2 w-2 bg-accent-cyan/50" aria-hidden="true" />
-                  <span className="technical-label ml-2 text-[10px] text-foreground-muted/40">
-                    scott@personal-node:~$
-                  </span>
-                </div>
-                <div className="space-y-2 p-4 text-sm text-foreground-muted">
-                  <p>
-                    <span className="mr-2 text-accent-green">›</span>
-                    interactive command registry deferred to Phase 3
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <span className="text-accent-cyan">scott@personal-node:~$</span>
-                    <span className="ml-1 inline-block h-4 w-2 bg-foreground-muted/60 cursor-blink" aria-hidden="true" />
-                  </p>
-                </div>
-              </div>
-            </div>
-            <h2 id="terminal-title" className="sr-only">Interactive terminal</h2>
-          </HudPanel>
-        </section>
+        {/* ── Terminal ─────────────────────────────────────────────── */}
+        <TerminalPanel content={terminal} />
 
         {/* ── Featured work ─────────────────────────────────────────── */}
         <section id="featured-work" aria-labelledby="featured-work-title" className="scroll-mt-24">
