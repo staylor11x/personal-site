@@ -152,6 +152,8 @@ export function getNowPlayingContent(): NowPlayingContent {
 export type Journey = {
   year: string;
   destination: string;
+  lat: number;
+  lng: number;
 };
 
 export type TravelContent = {
@@ -168,6 +170,8 @@ export function getTravelContent(): TravelContent {
       ? d.journeys.map((j: any) => ({
           year: isString(j?.year) ? j.year : "",
           destination: isString(j?.destination) ? j.destination : "",
+          lat: typeof j?.lat === "number" ? j.lat : 0,
+          lng: typeof j?.lng === "number" ? j.lng : 0,
         }))
       : [],
   };
