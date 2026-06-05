@@ -1,5 +1,5 @@
 ---
-countriesVisited: 27
+countriesVisited: 16
 journeys:
   - year: "2026"
     destination: "Belgium"
@@ -82,4 +82,37 @@ journeys:
       - { name: "Lake Como", lat: 46.02, lng: 9.26 }
       - { name: "Geneva", lat: 46.20, lng: 6.14 }
       - { name: "Reims", lat: 49.26, lng: 4.03 }
+  - year: "2022"
+    destination: Portugal
+    flightFrom: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
+    flightTo: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
+    lat: 37.02
+    lng: -8.00
+    locations:
+      - { name: "Albufeira", lat: 37.09, lng: -8.25 }
+  - year: "2019"
+    destination: Europe Interrailing
+    lat: 50.00
+    lng: 10.00
+    flightFrom: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
+    flightTo: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
+    locations:
+      - { name: "Amsterdam", lat: 52.37, lng: 4.90 }
+      - { name: "Berlin", lat: 52.52, lng: 13.40 }
+      - { name: "Prague", lat: 50.08, lng: 14.42 }
+      - { name: "Budapest", lat: 47.50, lng: 19.04 }
+  - year: "Various"
+    destination: Mallorca
+    lat: 39.60
+    lng: 2.65
+    hideFromLog: true
+    flightFrom: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
+    flightTo: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
+  - year: "2015" 
+    destination: Paris
+    lat: 48.86
+    lng: 2.35
+    hideFromLog: true
+    flightFrom: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
+    flightTo: { name: "Edinburgh", lat: 55.95, lng: -3.19 }
 ---

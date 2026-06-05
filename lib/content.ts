@@ -169,6 +169,7 @@ export type Journey = {
   locations?: Location[];
   flightFrom?: FlightEndpoint;
   flightTo?: FlightEndpoint;
+  hideFromLog?: boolean;
 };
 
 export type TravelContent = {
@@ -203,6 +204,7 @@ export function getTravelContent(): TravelContent {
             : undefined,
           flightFrom: parseEndpoint(j?.flightFrom),
           flightTo: parseEndpoint(j?.flightTo),
+          hideFromLog: j?.hideFromLog === true,
         }))
       : [],
   };

@@ -87,23 +87,26 @@ export default function TravelPanel({ content }: TravelPanelProps) {
           <div className="p-5">
             <p className="technical-label mb-4 text-xs text-accent-cyan">{'// RECENT JOURNEYS'}</p>
             <ul className="space-y-1">
-              {content.journeys.map((journey, i) => (
-                <li key={i}>
-                  <button
-                    onClick={() => handleLogRowClick(i)}
-                    className={`flex w-full items-center gap-3 px-2 py-2 text-left transition-all ${
-                      activeIndex === i
-                        ? "border-l-2 border-accent-cyan bg-accent-cyan/5 text-accent-cyan"
-                        : "border-l-2 border-transparent text-foreground-muted hover:border-accent-cyan/30 hover:bg-accent-cyan/[0.03]"
-                    }`}
-                  >
-                    <span className="technical-label text-[10px] text-accent-cyan/40 tabular-nums shrink-0">
-                      {journey.year}
-                    </span>
-                    <span className="font-mono text-xs">{journey.destination}</span>
-                  </button>
-                </li>
-              ))}
+              {content.journeys.map((journey, i) => {
+                if (journey.hideFromLog) return null;
+                return (
+                  <li key={i}>
+                    <button
+                      onClick={() => handleLogRowClick(i)}
+                      className={`flex w-full items-center gap-3 px-2 py-2 text-left transition-all ${
+                        activeIndex === i
+                          ? "border-l-2 border-accent-cyan bg-accent-cyan/5 text-accent-cyan"
+                          : "border-l-2 border-transparent text-foreground-muted hover:border-accent-cyan/30 hover:bg-accent-cyan/[0.03]"
+                      }`}
+                    >
+                      <span className="technical-label text-[10px] text-accent-cyan/40 tabular-nums shrink-0">
+                        {journey.year}
+                      </span>
+                      <span className="font-mono text-xs">{journey.destination}</span>
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
