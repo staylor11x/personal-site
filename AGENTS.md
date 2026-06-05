@@ -1,5 +1,7 @@
 # AGENTS.md
 
+UNDER NO CIRCUMSTANCES EVER COMMIT AND PUSH FILES TO GIT.
+
 ## Architecture
 
 - **Frontend:** Next.js (App Router, TypeScript, Tailwind CSS) at the repo root. Configured as a **static export** (`output: "export"` in `next.config.ts`) — deployed to GCS, not Vercel. No server-side rendering at runtime.

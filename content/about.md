@@ -3,7 +3,7 @@ eyebrow: About
 heading: A bit about me
 contact:
   label: Read more
-  href: "/blog"
+  href: "/blog/"
 ---
 
 Hey! I'm Scott and I built this website to show what a fantastic full-stack developer I am... Ok I'm not a fullstack developer and perhaps you can tell that from this site But hey, I had a lot of fun building it! Until Microsoft dramatically reduced their token limits :/ As such I am being forced to write this section with my own two fingers.

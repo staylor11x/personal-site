@@ -49,7 +49,7 @@ export default function TravelPanel({ content }: TravelPanelProps) {
               ))}
             </ul>
             <a
-              href="/blog"
+              href="/blog/"
               className="mt-5 inline-flex items-center gap-1 technical-label text-[10px] text-foreground-muted/40 transition-colors hover:text-accent-cyan"
             >
               &gt; VIEW ALL
