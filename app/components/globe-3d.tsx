@@ -11,6 +11,14 @@ type Globe3DProps = {
   journeyWithArcs: number | null;
   onMarkerClick: (index: number) => void;
   reducedMotion: boolean;
+  flightArcs: FlightArc[];
+};
+
+type FlightArc = {
+  startLat: number;
+  startLng: number;
+  endLat: number;
+  endLng: number;
 };
 
 type PathData = {
@@ -33,7 +41,7 @@ function interpolatePoints(
   return points;
 }
 
-export default function Globe3D({ markers, activeIndex, journeyWithArcs, onMarkerClick, reducedMotion }: Globe3DProps) {
+export default function Globe3D({ markers, activeIndex, journeyWithArcs, onMarkerClick, reducedMotion, flightArcs }: Globe3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<GlobeMethods | null>(null) as React.MutableRefObject<GlobeMethods | undefined>;
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -145,6 +153,18 @@ export default function Globe3D({ markers, activeIndex, journeyWithArcs, onMarke
           pointRadius={0.25}
           onPointClick={handlePointClick}
           onGlobeClick={handleGlobeClick}
+          arcsData={flightArcs}
+          arcStartLat="startLat"
+          arcStartLng="startLng"
+          arcEndLat="endLat"
+          arcEndLng="endLng"
+          arcColor={() => "#39ff14"}
+          arcAltitude={null}
+          arcStroke={0.3}
+          arcDashLength={0.05}
+          arcDashGap={0.06}
+          arcDashAnimateTime={8000}
+          arcsTransitionDuration={0}
           pathsData={paths}
           pathPoints="coords"
           pathPointLat="lat"
@@ -152,7 +172,10 @@ export default function Globe3D({ markers, activeIndex, journeyWithArcs, onMarke
           pathPointAlt="alt"
           pathColor={() => "#ff2e8a"}
           pathStroke={2.0}
+          pathDashLength={0.1}
+          pathDashGap={0.05}
           pathResolution={1}
+          pathDashAnimateTime={4000}
           width={dimensions.width}
           height={dimensions.height}
         />

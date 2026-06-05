@@ -33,6 +33,22 @@ export default function TravelPanel({ content }: TravelPanelProps) {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
+  const flightArcs = useMemo(() => {
+    if (journeyWithArcs === null) return [];
+    const j = content.journeys[journeyWithArcs];
+    if (!j) return [];
+    const points = j.locations && j.locations.length > 0 ? j.locations : [{ lat: j.lat, lng: j.lng }];
+    const arcs: { startLat: number; startLng: number; endLat: number; endLng: number }[] = [];
+    if (j.flightFrom) {
+      arcs.push({ startLat: j.flightFrom.lat, startLng: j.flightFrom.lng, endLat: points[0].lat, endLng: points[0].lng });
+    }
+    if (j.flightTo) {
+      const last = points[points.length - 1];
+      arcs.push({ startLat: last.lat, startLng: last.lng, endLat: j.flightTo.lat, endLng: j.flightTo.lng });
+    }
+    return arcs;
+  }, [content, journeyWithArcs]);
+
   const handleMarkerClick = useCallback((index: number) => {
     setActiveIndex((prev) => (prev === index ? null : index));
     setJourneyWithArcs(null);
@@ -57,6 +73,7 @@ export default function TravelPanel({ content }: TravelPanelProps) {
               journeyWithArcs={journeyWithArcs}
               onMarkerClick={handleMarkerClick}
               reducedMotion={reducedMotion}
+              flightArcs={flightArcs}
             />
             <div className="absolute bottom-3 left-3 space-y-1 pointer-events-none">
               <p className="text-5xl font-black text-accent-magenta" style={{ fontFamily: "var(--font-heading)" }}>

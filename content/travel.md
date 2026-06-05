@@ -5,10 +5,14 @@ journeys:
     destination: "Belgium"
     lat: 51.05
     lng: 3.73
+    flightFrom: { name: "Glasgow", lat: 55.86, lng: -4.26 }
+    flightTo: { name: "Glasgow", lat: 55.86, lng: -4.26 }
   - year: "2025"
     destination: Thailand + Vietnam
     lat: 18.79
     lng: 98.99
+    flightFrom: { name: "Glasgow", lat: 55.86, lng: -4.26 }
+    flightTo: { name: "Glasgow", lat: 55.86, lng: -4.26 }
     locations:
       - { name: "Bangkok", lat: 13.76, lng: 100.50 }
       - { name: "Chiang Mai", lat: 18.79, lng: 98.99 }
@@ -25,17 +29,24 @@ journeys:
     destination: Iceland
     lat: 64.9
     lng: -19.0
+    flightFrom: { name: "Glasgow", lat: 55.86, lng: -4.26 }
+    flightTo: { name: "Glasgow", lat: 55.86, lng: -4.26 }
     locations:
       - { name: "Reykjavík", lat: 64.15, lng: -21.94 }
       - { name: "Vík", lat: 63.42, lng: -19.01 }
+      - { name: "Reykjavík", lat: 64.15, lng: -21.94 }
   - year: "2024"
     destination: "New York"
     lat: 40.7
     lng: -74.0
+    flightFrom: { name: "London", lat: 51.50, lng: -0.12 }
+    flightTo: { name: "London", lat: 51.50, lng: -0.12 }
   - year: "2024"
     destination: Australia
     lat: -28.64
     lng: 153.62
+    flightFrom: { name: "Aberdeen", lat: 57.15, lng: -2.09 }
+    flightTo: { name: "Aberdeen", lat: 57.15, lng: -2.09 }
     locations:
       - { name: "Sydney", lat: -33.86, lng: 151.20 }
       - { name: "Byron Bay", lat: -28.65, lng: 153.61 }
@@ -50,10 +61,13 @@ journeys:
     destination: USA East Coast
     lat: 38.0
     lng: -78.0
+    flightFrom: { name: "Aberdeen", lat: 57.15, lng: -2.09 }
+    flightTo: { name: "Aberdeen", lat: 57.15, lng: -2.09 }
     locations:
       - { name: "New York", lat: 40.71, lng: -74.01 }
       - { name: "Boston", lat: 42.36, lng: -71.06 }
       - { name: "Philadelphia", lat: 39.95, lng: -75.16 }
+      - { name: "New York", lat: 40.71, lng: -74.01 }
   - year: "2022"
     destination: European Road Trip
     lat: 46.80
