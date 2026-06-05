@@ -149,11 +149,18 @@ export function getNowPlayingContent(): NowPlayingContent {
 
 // ── Travel ────────────────────────────────────────────────────────────────────
 
+export type Location = {
+  name: string;
+  lat: number;
+  lng: number;
+};
+
 export type Journey = {
   year: string;
   destination: string;
   lat: number;
   lng: number;
+  locations?: Location[];
 };
 
 export type TravelContent = {
@@ -172,10 +179,19 @@ export function getTravelContent(): TravelContent {
           destination: isString(j?.destination) ? j.destination : "",
           lat: typeof j?.lat === "number" ? j.lat : 0,
           lng: typeof j?.lng === "number" ? j.lng : 0,
+          locations: Array.isArray(j?.locations)
+            ? j.locations.map((l: any) => ({
+                name: isString(l?.name) ? l.name : "",
+                lat: typeof l?.lat === "number" ? l.lat : 0,
+                lng: typeof l?.lng === "number" ? l.lng : 0,
+              }))
+            : undefined,
         }))
       : [],
   };
 }
+
+
 
 export type ContactLink = {
   label: string;
