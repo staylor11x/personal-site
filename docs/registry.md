@@ -21,3 +21,4 @@ The authoritative index of every living document in the repository. Update this 
 | [backend/SETUP.md](../backend/SETUP.md) | GCP setup, Spotify OAuth flow, Secret Manager provisioning, local dev and Cloud Run deploy steps | 1.0 | 2026-05-31 | GCP project, secrets, SA, or local dev workflow changes |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | Local development workflow for the C++ backend (Docker) and Next.js frontend | 1.0 | 2026-05-31 | Dev tooling, build process, or environment variable setup changes |
 | [README.md](../README.md) | Repository overview and quick-start | — | — | Project purpose or setup steps change |
+| [docs/travel-globe-plan.md](travel-globe-plan.md) | Travel globe feature scope, library choice (react-globe.gl), visual spec, component design, and exit criteria | 2.0 | 2026-06-05 | Scope, library, visual decisions, or exit criteria change |

@@ -149,17 +149,40 @@ export function getNowPlayingContent(): NowPlayingContent {
 
 // ── Travel ────────────────────────────────────────────────────────────────────
 
+export type Location = {
+  name: string;
+  lat: number;
+  lng: number;
+};
+
+export type FlightEndpoint = {
+  name: string;
+  lat: number;
+  lng: number;
+};
+
 export type Journey = {
   year: string;
   destination: string;
   lat: number;
   lng: number;
+  locations?: Location[];
+  flightFrom?: FlightEndpoint;
+  flightTo?: FlightEndpoint;
+  hideFromLog?: boolean;
 };
 
 export type TravelContent = {
   countriesVisited: number;
   journeys: Journey[];
 };
+
+function parseEndpoint(v: any): FlightEndpoint | undefined {
+  if (!v || typeof v !== "object") return undefined;
+  return isString(v?.name) && typeof v?.lat === "number" && typeof v?.lng === "number"
+    ? { name: v.name, lat: v.lat, lng: v.lng }
+    : undefined;
+}
 
 export function getTravelContent(): TravelContent {
   const { data } = readContent("travel.md");
@@ -172,10 +195,22 @@ export function getTravelContent(): TravelContent {
           destination: isString(j?.destination) ? j.destination : "",
           lat: typeof j?.lat === "number" ? j.lat : 0,
           lng: typeof j?.lng === "number" ? j.lng : 0,
+          locations: Array.isArray(j?.locations)
+            ? j.locations.map((l: any) => ({
+                name: isString(l?.name) ? l.name : "",
+                lat: typeof l?.lat === "number" ? l.lat : 0,
+                lng: typeof l?.lng === "number" ? l.lng : 0,
+              }))
+            : undefined,
+          flightFrom: parseEndpoint(j?.flightFrom),
+          flightTo: parseEndpoint(j?.flightTo),
+          hideFromLog: j?.hideFromLog === true,
         }))
       : [],
   };
 }
+
+
 
 export type ContactLink = {
   label: string;
