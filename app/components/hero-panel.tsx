@@ -23,7 +23,7 @@ export default function HeroPanel({ hero }: HeroPanelProps) {
           }
         />
 
-        <div className="grid gap-0 lg:grid-cols-[1fr_280px_200px]">
+        <div className="grid gap-0 lg:grid-cols-[1fr_450px_200px]">
           {/* ── Left: identity ─────────────────────────────────────── */}
           <div className="flex flex-col justify-between gap-6 border-b border-border-subtle p-6 sm:p-8 lg:border-b-0 lg:border-r">
             <div className="space-y-4">
