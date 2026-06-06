@@ -27,6 +27,11 @@ export default function AnimatedArtwork() {
           .bg { stroke: #0f0; stroke-width: 1.5; stroke-linecap: round; fill: none; }
           .bc { stroke: #0ff; stroke-width: 1.5; stroke-linecap: round; fill: none; }
           .sq { stroke: #f0f; stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+          @media (prefers-reduced-motion: reduce) {
+            line, path, circle, rect {
+              animation: none !important;
+            }
+          }
         `}</style>
         <pattern id="dotPattern" x="6" y="6" width="12" height="12" patternUnits="userSpaceOnUse">
           <circle cx="6" cy="6" r="1.5" fill="#f0f" opacity="0.35" />
