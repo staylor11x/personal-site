@@ -12,7 +12,6 @@ import NowPlayingPanel from "./components/now-playing-panel";
 import { HudPanel, HudPanelHeader, SiteContainer } from "./components/site-primitives";
 import TerminalPanel from "./components/terminal-panel";
 import TravelPanel from "./components/travel-panel";
-
 export default function Home() {
   const hero = getHeroContent();
   const about = getAboutContent();
