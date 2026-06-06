@@ -12,8 +12,6 @@ import NowPlayingPanel from "./components/now-playing-panel";
 import { HudPanel, HudPanelHeader, SiteContainer } from "./components/site-primitives";
 import TerminalPanel from "./components/terminal-panel";
 import TravelPanel from "./components/travel-panel";
-import AnimatedArtwork from "./components/AnimatedArtwork";
-
 export default function Home() {
   const hero = getHeroContent();
   const about = getAboutContent();
@@ -28,19 +26,6 @@ export default function Home() {
 
         {/* ── Hero ─────────────────────────────────────────────────── */}
         <HeroPanel hero={hero} />
-
-        {/* ── Animated Artwork ──────────────────────────────────────── */}
-        <section id="animated-art" aria-labelledby="animated-art-title" className="scroll-mt-24">
-          <HudPanel>
-            <HudPanelHeader label="// ANIMATED ARTWORK" />
-            <div className="p-5">
-              <h2 id="animated-art-title" className="sr-only">Animated Artwork</h2>
-              <div className="h-96 w-full">
-                <AnimatedArtwork />
-              </div>
-            </div>
-          </HudPanel>
-        </section>
 
         {/* ── Three-column row: About / Currently / Now Playing ────── */}
         <div className="grid gap-4 lg:grid-cols-[1fr_240px_220px]">

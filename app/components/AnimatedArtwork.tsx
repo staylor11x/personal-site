@@ -1,186 +1,85 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 export default function AnimatedArtwork() {
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  useEffect(() => {
-    // Add animation styles to document if not exists
-    if (!document.getElementById('animated-artwork-styles')) {
-      const style = document.createElement('style');
-      style.id = 'animated-artwork-styles';
-      style.innerHTML = `
-        @keyframes drawLine {
-          0% {
-            stroke-dashoffset: var(--dash-length);
-            opacity: 0.2;
-          }
-          30% {
-            opacity: 0.7;
-          }
-          50% {
-            stroke-dashoffset: 0;
-            opacity: 1;
-          }
-          70% {
-            opacity: 0.7;
-          }
-          100% {
-            stroke-dashoffset: calc(var(--dash-length) * -1);
-            opacity: 0.2;
-          }
-        }
-
-        @keyframes glowPulse {
-          0%, 100% {
-            filter: drop-shadow(0 0 1px currentColor);
-          }
-          50% {
-            filter: drop-shadow(0 0 6px currentColor);
-          }
-        }
-
-        @keyframes flowCircle {
-          0%, 100% {
-            filter: drop-shadow(0 0 2px currentColor);
-            opacity: 0.6;
-          }
-          50% {
-            filter: drop-shadow(0 0 8px currentColor);
-            opacity: 1;
-          }
-        }
-
-        .animated-line {
-          --dash-length: 500;
-          animation: drawLine 4s infinite ease-in-out;
-        }
-
-        .animated-line-fast {
-          --dash-length: 400;
-          animation: drawLine 3s infinite ease-in-out;
-        }
-
-        .animated-line-slow {
-          --dash-length: 600;
-          animation: drawLine 5s infinite ease-in-out;
-        }
-
-        .dotted-rect {
-          animation: glowPulse 2.5s infinite ease-in-out;
-          opacity: 0.6;
-        }
-
-        .circle-glow {
-          animation: flowCircle 2.5s infinite ease-in-out;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }, []);
-
   return (
     <svg
-      ref={svgRef}
-      viewBox="0 0 912 1020"
+      viewBox="0 0 1000 1000"
       className="w-full h-full"
       preserveAspectRatio="xMidYMid meet"
     >
       <defs>
         <style>{`
-          .line-cyan {
-            stroke: #0ff;
-            stroke-width: 2;
-            stroke-linecap: round;
-            fill: none;
+          @keyframes flow {
+            from { stroke-dashoffset: 200; }
+            to   { stroke-dashoffset: 0; }
           }
-          .line-magenta {
-            stroke: #f0f;
-            stroke-width: 2;
-            stroke-linecap: round;
-            fill: none;
+          @keyframes orbit {
+            from { stroke-dashoffset: 238.8; }
+            to   { stroke-dashoffset: 0; }
           }
-          .line-green {
-            stroke: #0f0;
-            stroke-width: 2;
-            stroke-linecap: round;
-            fill: none;
+          @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50%      { opacity: 0.9; }
           }
+          .bm { stroke: #f0f; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+          .bg { stroke: #0f0; stroke-width: 1.5; stroke-linecap: round; fill: none; }
+          .bc { stroke: #0ff; stroke-width: 1.5; stroke-linecap: round; fill: none; }
+          .sq { stroke: #f0f; stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
         `}</style>
-      </defs>
-
-      {/* Background */}
-      <rect width="912" height="1020" fill="#0a0f1f" />
-
-      {/* Animated lines with staggered animation timings */}
-      
-      {/* Top horizontal line */}
-      <line x1="0" y1="120" x2="912" y2="120" className="line-magenta animated-line" />
-      
-      {/* Horizontal line middle */}
-      <line x1="0" y1="375" x2="912" y2="375" className="line-cyan animated-line-slow" />
-
-      {/* Left vertical lines */}
-      <line x1="160" y1="120" x2="160" y2="540" className="line-magenta animated-line-fast" />
-      <line x1="230" y1="120" x2="230" y2="370" className="line-magenta animated-line" />
-      <line x1="0" y1="425" x2="195" y2="425" className="line-magenta animated-line-fast" />
-
-      {/* Center vertical lines */}
-      <line x1="270" y1="0" x2="270" y2="195" className="line-green animated-line" />
-      <line x1="380" y1="300" x2="380" y2="675" className="line-cyan animated-line-fast" />
-
-      {/* Right area - vertical lines */}
-      <line x1="545" y1="120" x2="545" y2="850" className="line-magenta animated-line-slow" />
-      <line x1="800" y1="290" x2="800" y2="850" className="line-cyan animated-line" />
-
-      {/* Right horizontal lines */}
-      <line x1="545" y1="175" x2="912" y2="175" className="line-magenta animated-line" />
-      <line x1="225" y1="540" x2="912" y2="540" className="line-magenta animated-line" />
-      <line x1="355" y1="790" x2="912" y2="790" className="line-cyan animated-line-fast" />
-
-      {/* Top right circle - with glow animation */}
-      <circle
-        cx="775"
-        cy="230"
-        r="45"
-        fill="none"
-        className="line-magenta circle-glow"
-        style={{
-          stroke: '#f0f',
-          strokeWidth: '2',
-        }}
-      />
-
-      {/* Dotted rectangle (lower left) */}
-      <rect
-        x="180"
-        y="685"
-        width="175"
-        height="125"
-        fill="none"
-        className="line-magenta dotted-rect"
-        style={{
-          strokeDasharray: '5,5',
-          stroke: '#f0f',
-          strokeWidth: '2',
-        }}
-      />
-
-      {/* Inner fill pattern for rectangle */}
-      <defs>
-        <pattern id="dotPattern" x="8" y="8" width="16" height="16" patternUnits="userSpaceOnUse">
-          <circle cx="8" cy="8" r="2" fill="#f0f" opacity="0.4" />
+        <pattern id="dotPattern" x="6" y="6" width="12" height="12" patternUnits="userSpaceOnUse">
+          <circle cx="6" cy="6" r="1.5" fill="#f0f" opacity="0.35" />
         </pattern>
       </defs>
-      <rect
-        x="180"
-        y="685"
-        width="175"
-        height="125"
-        fill="url(#dotPattern)"
-        opacity="0.5"
-      />
+
+      <rect width="1000" height="1000" fill="#0a0f1f" />
+
+      {/* Base lines */}
+      <g opacity="0.45">
+        <line x1="-10" y1="160" x2="830" y2="160" className="bm" />
+        <line x1="336" y1="0" x2="336" y2="250" className="bg" />
+        <line x1="708" y1="0" x2="708" y2="220" className="bm" />
+        <circle cx="708" cy="258" r="38" className="bm" />
+        <line x1="-10" y1="340" x2="790" y2="340" className="bg" />
+        <line x1="207" y1="160" x2="207" y2="500" className="bm" />
+        <line x1="207" y1="468" x2="1000" y2="468" className="bm" />
+        <path d="M -10,547 L 245,547 L 245,630" className="bm" />
+        <line x1="494" y1="385" x2="494" y2="880" className="bc" />
+        <line x1="325" y1="710" x2="1000" y2="710" className="bc" />
+        <line x1="731" y1="385" x2="731" y2="1000" className="bm" />
+        <line x1="-10" y1="925" x2="422" y2="925" className="bm" />
+      </g>
+
+      {/* Square */}
+      <rect x="165" y="630" width="160" height="160" fill="url(#dotPattern)" />
+      <rect x="165" y="630" width="160" height="160" className="sq" style={{ animation: 'pulse 3s infinite ease-in-out' }} />
+
+      {/* Flowing magenta lines */}
+      <g stroke="#f0f" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" strokeDasharray="60 140" style={{ filter: 'drop-shadow(0 0 3px #f0f)' }}>
+        <line x1="-10" y1="160" x2="830" y2="160" style={{ animation: 'flow 3s infinite linear' }} />
+        <line x1="708" y1="0" x2="708" y2="220" style={{ animation: 'flow 5s infinite linear' }} />
+        <line x1="207" y1="160" x2="207" y2="500" style={{ animation: 'flow 5s infinite linear' }} />
+        <line x1="207" y1="468" x2="1000" y2="468" style={{ animation: 'flow 3s infinite linear' }} />
+        <path d="M -10,547 L 245,547 L 245,630" style={{ animation: 'flow 5s infinite linear' }} />
+        <line x1="731" y1="385" x2="731" y2="1000" style={{ animation: 'flow 7s infinite linear' }} />
+        <line x1="-10" y1="925" x2="422" y2="925" style={{ animation: 'flow 5s infinite linear' }} />
+      </g>
+
+      {/* Flowing green lines */}
+      <g stroke="#0f0" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="60 140" style={{ filter: 'drop-shadow(0 0 3px #0f0)' }}>
+        <line x1="336" y1="0" x2="336" y2="250" style={{ animation: 'flow 5s infinite linear' }} />
+        <line x1="-10" y1="340" x2="790" y2="340" style={{ animation: 'flow 7s infinite linear' }} />
+      </g>
+
+      {/* Flowing cyan lines */}
+      <g stroke="#0ff" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="60 140" style={{ filter: 'drop-shadow(0 0 3px #0ff)' }}>
+        <line x1="494" y1="385" x2="494" y2="880" style={{ animation: 'flow 5s infinite linear' }} />
+        <line x1="325" y1="710" x2="1000" y2="710" style={{ animation: 'flow 3s infinite linear' }} />
+      </g>
+
+      {/* Circle with orbiting dot */}
+      <circle cx="708" cy="258" r="38" stroke="#f0f" strokeWidth="2.5" fill="none" strokeDasharray="60 178.8" style={{ filter: 'drop-shadow(0 0 3px #f0f)', animation: 'orbit 4s infinite linear' }} />
     </svg>
   );
 }
